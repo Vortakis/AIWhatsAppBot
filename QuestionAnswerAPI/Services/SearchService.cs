@@ -1,6 +1,6 @@
-﻿using QnAServiceApi.Repository;
+﻿using QuestionAnswerAPI.Repository;
 
-namespace QnAServiceApi.Services;
+namespace QuestionAnswerAPI.Services;
 
 public class SearchService : ISearchService
 {

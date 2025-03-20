@@ -1,6 +1,6 @@
 ﻿using AIWAB.Common.QnA.DTOs;
 
-namespace QnAServiceApi.Services;
+namespace QuestionAnswerAPI.Services;
 
 public interface IQnAService
 {

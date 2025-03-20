@@ -1,4 +1,4 @@
-﻿namespace QnAServiceApi.Services
+﻿namespace QuestionAnswerAPI.Services
 {
     public interface ISearchService
     {

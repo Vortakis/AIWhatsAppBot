@@ -1,5 +1,5 @@
-using QnAServiceApi.Repository;
-using QnAServiceApi.Services;
+using QuestionAnswerAPI.Repository;
+using QuestionAnswerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

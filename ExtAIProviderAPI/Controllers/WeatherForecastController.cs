@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExternalAIPromptAPI.Controllers;
+namespace ExtAIProviderAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]

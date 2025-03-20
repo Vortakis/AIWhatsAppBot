@@ -1,4 +1,4 @@
-﻿namespace ExternalAIPromptAPI.Models;
+﻿namespace ExtAIProviderAPI.Models;
 
 public class AIResponse
 {

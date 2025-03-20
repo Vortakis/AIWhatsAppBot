@@ -1,8 +1,8 @@
 ﻿using AIWAB.Common.QnA.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using QnAServiceApi.Services;
+using QuestionAnswerAPI.Services;
 
-namespace QnAServiceApi.Controllers;
+namespace QuestionAnswerAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

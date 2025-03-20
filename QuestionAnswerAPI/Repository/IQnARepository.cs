@@ -1,7 +1,6 @@
-﻿
-using QnAServiceApi.Models;
+﻿using QuestionAnswerAPI.Models;
 
-namespace QnAServiceApi.Repository;
+namespace QuestionAnswerAPI.Repository;
 
 public interface IQnARepository
 {

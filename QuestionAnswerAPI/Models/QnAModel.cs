@@ -1,4 +1,4 @@
-﻿namespace QnAServiceApi.Models;
+﻿namespace QuestionAnswerAPI.Models;
 
 public class QnAModel
 {

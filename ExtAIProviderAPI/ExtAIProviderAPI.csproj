@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Enum\" />
+    <ProjectReference Include="..\AIWAB.Common\AIWAB.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using QnAServiceApi.Models;
+using QuestionAnswerAPI.Models;
 
-namespace QnAServiceApi.Repository;
+namespace QuestionAnswerAPI.Repository;
 
 public class QnARepository : IQnARepository
 {
