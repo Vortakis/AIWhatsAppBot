@@ -1,6 +1,9 @@
-﻿namespace ExtAIProviderAPI.Services
+﻿using ExtAIProviderAPI.AIProviders;
+using ExtAIProviderAPI.Models;
+
+namespace ExtAIProviderAPI.Services;
+
+public interface IAIProviderService
 {
-    public interface IAIProviderService
-    {
-    }
+    Task<AIResponse> ProcessPromptAsync(AIRequest promptRequest);
 }

@@ -1,4 +1,7 @@
 using AIWAB.Common.Configuration.ExternalAI;
+using ExtAIProviderAPI.AIProviders;
+using ExtAIProviderAPI.AIProviders.OpenAI;
+using ExtAIProviderAPI.Services;
 using OpenAI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,11 @@ builder.Services.AddSingleton(sp =>
 
     return new OpenAIClient(openAISettings?.ApiKey);
 });
+builder.Services.AddTransient<OpenAIProvider>();
+builder.Services.AddSingleton<AIProviderFactory>();
+builder.Services.AddScoped<IAIProviderService, AIProviderService>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

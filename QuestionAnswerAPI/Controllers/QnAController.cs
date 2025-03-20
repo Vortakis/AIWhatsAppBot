@@ -1,6 +1,6 @@
 ﻿using AIWAB.Common.QnA.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using QuestionAnswerAPI.Services;
+using QnAServiceApi.Services;
 
 namespace QuestionAnswerAPI.Controllers;
 
