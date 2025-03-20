@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  questionanswerapi:
+    image: questionanswerapi-image
+    build:
+      context: .
+      dockerfile: QuestionAnswerAPI/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - app-network
+
+  extaiproviderapi:
+    image: extaiproviderapi-image
+    build:
+      context: .
+      dockerfile: ExtAIProviderAPI/Dockerfile
+    ports:
+      - "9090:8080"
+      - "9091:8081"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

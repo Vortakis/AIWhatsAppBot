@@ -1,7 +1,6 @@
 ﻿using AIWAB.Common.QnA.DTOs;
-using QnAServiceApi.Models;
-using QnAServiceApi.Repository;
-using QnAServiceApi.Services;
+using QuestionAnswerAPI.Models;
+using QuestionAnswerAPI.Repository;
 
 namespace QuestionAnswerAPI.Services;
 
