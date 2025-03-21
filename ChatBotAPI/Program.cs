@@ -39,18 +39,7 @@ if (aiProviderEndpoint == null)
 
 builder.Services.AddGrpcClient<AIProviderService.AIProviderServiceClient>(options =>
 {
-    options.Address = new Uri($"{aiProviderEndpoint.Url}:10000");
-})
-.ConfigurePrimaryHttpMessageHandler(() =>
-{
-    var handler = new SocketsHttpHandler
-    {
-        PooledConnectionLifetime = TimeSpan.FromMinutes(5), // Improve connection reuse
-        EnableMultipleHttp2Connections = true, // Allow multiple streams
-        ConnectTimeout = TimeSpan.FromSeconds(10) // Timeout for connections
-    };
-
-    return handler;
+    options.Address = new Uri($"{aiProviderEndpoint.Url}");
 });
 
 builder.Services.AddTransient<IAIProviderClientService, AIProviderClientService>();
