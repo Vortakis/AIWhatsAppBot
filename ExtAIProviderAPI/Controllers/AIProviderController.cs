@@ -1,5 +1,5 @@
 using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models;
+using ExtAIProviderAPI.Models.DTOs;
 using ExtAIProviderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ public class AIProviderController : ControllerBase
     }
 
     [HttpPost("prompt")]
-    public async Task<IActionResult> PromptAI([FromBody] AIRequest request)
+    public async Task<IActionResult> PromptAI([FromBody] AIRequestDTO request)
     {
         var response = await _aiProviderService.ProcessPromptAsync(request);
 

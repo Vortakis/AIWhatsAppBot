@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "ExtAIProviderAPI.Protos";
+
+
+service AIProviderService {
+  rpc PromptAI (AIRequest) returns (AIResponse);
+}
+
+message AIRequest {
+  string prompt = 1;
+  string prompt_type = 2;
+}
+
+message AIResponse {
+  string answer = 1;
+}

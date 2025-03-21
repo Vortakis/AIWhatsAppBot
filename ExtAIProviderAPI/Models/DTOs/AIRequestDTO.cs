@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ExtAIProviderAPI.Models.Enum;
 
-namespace ExtAIProviderAPI.Models
+namespace ExtAIProviderAPI.Models.DTOs
 {
-    public class AIRequest
+    public class AIRequestDTO
     {
         public AIPromptType PromptType { get; set; } = AIPromptType.QnA;
 

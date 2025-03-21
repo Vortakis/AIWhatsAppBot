@@ -1,9 +1,9 @@
 ﻿using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models;
+using ExtAIProviderAPI.Models.DTOs;
 
 namespace ExtAIProviderAPI.Services;
 
 public interface IAIProviderService
 {
-    Task<AIResponse> ProcessPromptAsync(AIRequest promptRequest);
+    Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest);
 }

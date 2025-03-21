@@ -19,9 +19,10 @@ builder.Services.AddTransient<OpenAIProvider>();
 builder.Services.AddSingleton<AIProviderFactory>();
 builder.Services.AddScoped<IAIProviderService, AIProviderService>();
 
-
-
 builder.Services.AddControllers();
+
+builder.Services.AddGrpc();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,5 +39,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGrpcService<AIPoviderServiceGrpc>();
+app.MapPost("/", () => "This is the AIAPI gRPC server.");
 app.Run();

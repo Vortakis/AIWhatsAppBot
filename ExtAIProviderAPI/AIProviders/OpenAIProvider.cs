@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using AIWAB.Common.Configuration.ExternalAI;
 using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models;
+using ExtAIProviderAPI.Models.DTOs;
 using ExtAIProviderAPI.Models.Enum;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -21,7 +21,7 @@ public class OpenAIProvider : IAIProvider
         _openAiUsageSettings = externalAISettings.Value.AIUsage;
     }
 
-    public async Task<AIResponse> ProcessAsync(string input, AIPromptType promptType)
+    public async Task<AIResponseDTO> ProcessAsync(string input, AIPromptType promptType)
     {
         switch (promptType)
         {
@@ -34,7 +34,7 @@ public class OpenAIProvider : IAIProvider
 
     }
 
-    private async Task<AIResponse> ProcessQnAAsync(string input)
+    private async Task<AIResponseDTO> ProcessQnAAsync(string input)
     {
         List<ChatMessage> chatMessages = new List<ChatMessage>
         {
@@ -50,6 +50,6 @@ public class OpenAIProvider : IAIProvider
         };
 
         var response = await _openAIClient.GetChatClient(_openAiUsageSettings["QnA"].Model).CompleteChatAsync(chatMessages);
-        return new AIResponse { Answer = response.Value.Content[0].Text.Trim() };
+        return new AIResponseDTO { Answer = response.Value.Content[0].Text.Trim() };
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models;
+using ExtAIProviderAPI.Models.DTOs;
 using ExtAIProviderAPI.Models.Enum;
 
 namespace ExtAIProviderAPI.Services
@@ -14,7 +14,7 @@ namespace ExtAIProviderAPI.Services
             _aiProvider = factory.GetProvider();
         }
 
-        public async Task<AIResponse> ProcessPromptAsync(AIRequest promptRequest)
+        public async Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest)
         {
             return await _aiProvider.ProcessAsync(promptRequest.Prompt, promptRequest.PromptType);
         }

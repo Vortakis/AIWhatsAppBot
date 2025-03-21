@@ -7,11 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIWAB.Common", "AIWAB.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestionAnswerAPI", "QuestionAnswerAPI\QuestionAnswerAPI.csproj", "{87AF29E4-7D60-4693-1263-57F85987C5A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtAIProviderAPI", "ExtAIProviderAPI\ExtAIProviderAPI.csproj", "{F0BC532B-899B-728C-7215-935B6526DE38}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBotAPI", "ChatBotAPI\ChatBotAPI.csproj", "{4DEE261B-F8ED-4A5D-9D17-FBF6A580620C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{534A9ACB-5E8F-AF6D-681F-54E04234840D} = {534A9ACB-5E8F-AF6D-681F-54E04234840D}
 	EndProjectSection
 EndProject
 Global
@@ -32,6 +34,10 @@ Global
 		{F0BC532B-899B-728C-7215-935B6526DE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0BC532B-899B-728C-7215-935B6526DE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0BC532B-899B-728C-7215-935B6526DE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DEE261B-F8ED-4A5D-9D17-FBF6A580620C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DEE261B-F8ED-4A5D-9D17-FBF6A580620C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DEE261B-F8ED-4A5D-9D17-FBF6A580620C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DEE261B-F8ED-4A5D-9D17-FBF6A580620C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
