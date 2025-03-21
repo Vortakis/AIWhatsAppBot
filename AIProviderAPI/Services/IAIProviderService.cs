@@ -1,7 +1,7 @@
-﻿using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models.DTOs;
+﻿using AIProviderAPI.AIProviders;
+using AIProviderAPI.Models.DTOs;
 
-namespace ExtAIProviderAPI.Services;
+namespace AIProviderAPI.Services;
 
 public interface IAIProviderService
 {

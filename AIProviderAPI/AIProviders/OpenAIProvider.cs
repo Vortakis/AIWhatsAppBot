@@ -1,14 +1,13 @@
 ﻿using System.Data;
 using AIWAB.Common.Configuration.ExternalAI;
-using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models.DTOs;
-using ExtAIProviderAPI.Models.Enum;
+using AIWAB.Common.Core.AIProviderAPI.Enum;
+using AIProviderAPI.Models.DTOs;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using OpenAI;
 using OpenAI.Chat;
 
-namespace ExtAIProviderAPI.AIProviders.OpenAI;
+namespace AIProviderAPI.AIProviders;
 
 public class OpenAIProvider : IAIProvider
 {

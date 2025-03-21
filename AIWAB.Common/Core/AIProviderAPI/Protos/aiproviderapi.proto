@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "ExtAIProviderAPI.Protos";
+option csharp_namespace = "AIProviderAPI.Protos";
 
 
 service AIProviderService {

@@ -1,4 +1,4 @@
-﻿namespace ChatBotAPI.MessagingServices.Enum
+﻿namespace ChatBotAPI.MessagingPlatforms.Enum
 {
     public enum MessagingPlatform
     {

@@ -1,6 +1,5 @@
 ﻿
-using AIWAB.Common.Configuration.MessageService;
-using ChatBotAPI.MessageServices;
+using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using ChatBotAPI.MessagingPlatforms.Twilio.Model;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;

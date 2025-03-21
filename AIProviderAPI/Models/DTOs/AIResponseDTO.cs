@@ -1,4 +1,4 @@
-﻿namespace ExtAIProviderAPI.Models.DTOs;
+﻿namespace AIProviderAPI.Models.DTOs;
 
 public class AIResponseDTO
 {

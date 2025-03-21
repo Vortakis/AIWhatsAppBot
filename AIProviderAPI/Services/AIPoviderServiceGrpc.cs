@@ -1,11 +1,11 @@
-﻿using ExtAIProviderAPI.Models.DTOs;
-using ExtAIProviderAPI.Models.Enum;
-using ExtAIProviderAPI.Protos;
+﻿using AIWAB.Common.Core.AIProviderAPI.Enum;
+using AIProviderAPI.Models.DTOs;
+using AIProviderAPI.Protos;
 using Grpc.Core;
 
-namespace ExtAIProviderAPI.Services;
+namespace AIProviderAPI.Services;
 
-public class AIPoviderServiceGrpc : ExtAIProviderAPI.Protos.AIProviderService.AIProviderServiceBase
+public class AIPoviderServiceGrpc : AIProviderAPI.Protos.AIProviderService.AIProviderServiceBase
 {
     private readonly IAIProviderService _aiProviderService;
 
@@ -22,10 +22,10 @@ public class AIPoviderServiceGrpc : ExtAIProviderAPI.Protos.AIProviderService.AI
             PromptType = Enum.Parse<AIPromptType>(request.PromptType)
         };
 
-       // var result = await _aiProviderService.ProcessPromptAsync(aiRequestDTO);
+        var result = await _aiProviderService.ProcessPromptAsync(aiRequestDTO);
         var aiResponse = new AIResponse
         {
-            Answer = "It worked!"// result.Answer
+            Answer = result.Answer
         };
         return aiResponse;
     }

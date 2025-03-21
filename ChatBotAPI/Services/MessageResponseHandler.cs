@@ -1,6 +1,6 @@
-﻿using ChatBotAPI.Clients;
-using ExtAIProviderAPI.Models.Enum;
-using ExtAIProviderAPI.Protos;
+﻿using AIWAB.Common.Core.AIProviderAPI.Enum;
+using ChatBotAPI.Clients;
+using AIProviderAPI.Protos;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace ChatBotAPI.Services

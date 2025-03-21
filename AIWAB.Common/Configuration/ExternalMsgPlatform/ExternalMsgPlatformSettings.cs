@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AIWAB.Common.Configuration.MessageService;
+namespace AIWAB.Common.Configuration.ExternalMsgPlatform;
 
 public class ExternalMsgPlatformSettings
 {

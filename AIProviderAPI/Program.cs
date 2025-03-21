@@ -1,7 +1,6 @@
 using AIWAB.Common.Configuration.ExternalAI;
-using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.AIProviders.OpenAI;
-using ExtAIProviderAPI.Services;
+using AIProviderAPI.AIProviders;
+using AIProviderAPI.Services;
 using OpenAI;
 
 var builder = WebApplication.CreateBuilder(args);

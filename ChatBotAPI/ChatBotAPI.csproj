@@ -27,6 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="..\AIWAB.Common\ExtAIProviderAPI\Protos\aiproviderapi.proto" GrpcServices="Client" />
+		<Protobuf Include="..\AIWAB.Common\Core\AIProviderAPI\Protos\aiproviderapi.proto" GrpcServices="Client" />
 	</ItemGroup>
 </Project>

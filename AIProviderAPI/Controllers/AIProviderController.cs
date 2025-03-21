@@ -1,9 +1,9 @@
-using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models.DTOs;
-using ExtAIProviderAPI.Services;
+using AIProviderAPI.AIProviders;
+using AIProviderAPI.Models.DTOs;
+using AIProviderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExtAIProviderAPI.Controllers;
+namespace AIProviderAPI.Controllers;
 
 [ApiController]
 [Route("api/ai")]

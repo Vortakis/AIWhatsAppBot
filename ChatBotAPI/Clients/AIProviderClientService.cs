@@ -1,4 +1,4 @@
-﻿using ExtAIProviderAPI.Protos;
+﻿using AIProviderAPI.Protos;
 
 namespace ChatBotAPI.Clients
 {

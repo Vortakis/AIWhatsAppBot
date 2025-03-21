@@ -1,9 +1,8 @@
 ﻿using AIWAB.Common.Configuration.ExternalAI;
-using ChatBotAPI.MessageServices;
+using ChatBotAPI.MessagingPlatforms.Enum;
 using ChatBotAPI.MessagingPlatforms.Twilio;
-using ChatBotAPI.MessagingServices.Enum;
 
-namespace ChatBotAPI.MessagingServices
+namespace ChatBotAPI.MessagingPlatforms
 {
     public class MessagingPlatformFactory
     {

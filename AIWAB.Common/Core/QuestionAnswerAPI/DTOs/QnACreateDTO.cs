@@ -1,4 +1,4 @@
-﻿namespace AIWAB.Common.QnA.DTOs;
+﻿namespace AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
 
 public class QnACreateDTO
 {

@@ -1,4 +1,4 @@
-﻿namespace ChatBotAPI.MessageServices
+﻿namespace ChatBotAPI.MessagingPlatforms
 {
     public interface IMessagingPlatformService
     {

@@ -1,12 +1,11 @@
-﻿using ChatBotAPI.MessagingPlatforms.Twilio.Model;
-using ChatBotAPI.MessagingServices.Enum;
+﻿using ChatBotAPI.MessagingPlatforms.Enum;
+using ChatBotAPI.MessagingPlatforms.Twilio.Model;
 using ChatBotAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Twilio.TwiML;
 
 namespace ChatBotAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/chatbot")]
     [ApiController]
     public class ChatBotController : ControllerBase
     {

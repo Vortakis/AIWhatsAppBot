@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ExtAIProviderAPI.Models.Enum;
+using AIWAB.Common.Core.AIProviderAPI.Enum;
 
-namespace ExtAIProviderAPI.Models.DTOs
+namespace AIProviderAPI.Models.DTOs
 {
     public class AIRequestDTO
     {

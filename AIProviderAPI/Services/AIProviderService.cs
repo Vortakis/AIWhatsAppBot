@@ -1,9 +1,8 @@
 ﻿
-using ExtAIProviderAPI.AIProviders;
-using ExtAIProviderAPI.Models.DTOs;
-using ExtAIProviderAPI.Models.Enum;
+using AIProviderAPI.AIProviders;
+using AIProviderAPI.Models.DTOs;
 
-namespace ExtAIProviderAPI.Services
+namespace AIProviderAPI.Services
 {
     public class AIProviderService : IAIProviderService
     {
@@ -16,7 +15,9 @@ namespace ExtAIProviderAPI.Services
 
         public async Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest)
         {
-            return await _aiProvider.ProcessAsync(promptRequest.Prompt, promptRequest.PromptType);
+            //await _aiProvider.ProcessAsync(promptRequest.Prompt, promptRequest.PromptType);
+
+            return await Task.FromResult(new AIResponseDTO { Answer = "AI Disabled manually - hi from me for now :)" });
         }
     }
 }

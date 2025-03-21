@@ -1,4 +1,4 @@
-﻿using ChatBotAPI.MessagingServices.Enum;
+﻿using ChatBotAPI.MessagingPlatforms.Enum;
 
 namespace ChatBotAPI.Services
 {

@@ -1,6 +1,6 @@
-﻿using ChatBotAPI.MessageServices;
-using ChatBotAPI.MessagingServices;
-using ChatBotAPI.MessagingServices.Enum;
+﻿
+using ChatBotAPI.MessagingPlatforms;
+using ChatBotAPI.MessagingPlatforms.Enum;
 
 namespace ChatBotAPI.Services
 {

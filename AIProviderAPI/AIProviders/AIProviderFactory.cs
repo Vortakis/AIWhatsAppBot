@@ -1,8 +1,7 @@
 ﻿using AIWAB.Common.Configuration.ExternalAI;
-using ExtAIProviderAPI.AIProviders.OpenAI;
 using Microsoft.Extensions.Options;
 
-namespace ExtAIProviderAPI.AIProviders
+namespace AIProviderAPI.AIProviders
 {
     public class AIProviderFactory
     {

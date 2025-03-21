@@ -1,4 +1,4 @@
-﻿using AIWAB.Common.QnA.DTOs;
+﻿using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
 
 namespace QuestionAnswerAPI.Services;
 
