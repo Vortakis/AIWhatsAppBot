@@ -23,6 +23,14 @@ builder.Services.AddControllers();
 
 builder.Services.AddGrpc();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(10000, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
