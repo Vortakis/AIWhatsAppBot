@@ -1,5 +1,6 @@
 ﻿using AIWAB.Common.Configuration.ExternalAI;
 using ChatBotAPI.MessageServices;
+using ChatBotAPI.MessagingPlatforms.Twilio;
 using ChatBotAPI.MessagingServices.Enum;
 
 namespace ChatBotAPI.MessagingServices
@@ -16,7 +17,7 @@ namespace ChatBotAPI.MessagingServices
         {
             return messagingPlatform switch
             {
-                MessagingPlatform.Twilio => _serviceProvider.GetRequiredService<WhatsAppService>(),
+                MessagingPlatform.Twilio => _serviceProvider.GetRequiredService<TwilioService>(),
                 // Add other platforms as needed
                 _ => throw new InvalidOperationException($"Unsupported platform: {messagingPlatform}")
             };

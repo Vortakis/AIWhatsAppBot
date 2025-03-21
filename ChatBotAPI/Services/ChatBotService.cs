@@ -7,25 +7,30 @@ namespace ChatBotAPI.Services
     public class ChatBotService : IChatBotService
     {
         private readonly MessagingPlatformFactory _messagingFactory;
+        private readonly IMessageResponseHandler _messageResponseHandler;
         private readonly ILogger<ChatBotService> _logger;
 
-        public ChatBotService(MessagingPlatformFactory messagingFactory, ILogger<ChatBotService> logger)
+        public ChatBotService(
+            MessagingPlatformFactory messagingFactory,
+            IMessageResponseHandler messageResponseHandler,
+            ILogger<ChatBotService> logger)
         {
             _messagingFactory = messagingFactory;
+            _messageResponseHandler = messageResponseHandler;
             _logger = logger;
         }
 
-        public async Task ProcessChatMessageAsync(MessagingPlatform platform, string requestBody, Dictionary<string, string> headers)
-        {         
+        public async Task ProcessChatMessageAsync<T>(MessagingPlatform platform, T request)
+        {
             var messagingService = _messagingFactory.GetService(platform);
 
-            var messageResult = messagingService.ParseReceivedMessage(requestBody);
+            var incomingMessage = messagingService.ParseReceivedMessage(request);
 
-            _logger.LogInformation($"Received message from {messageResult.From}: {messageResult.Message}");
+            _logger.LogInformation($"Received message from {incomingMessage.From}: {incomingMessage.Message}");
 
-           // string responseMessage = await HandleMessageLogicAsync(messageResult.Message);
+            string outgoingMessage = await _messageResponseHandler.HandleMessageAsync(incomingMessage.Message);
 
-           // await messagingService.SendMessageAsync(messageResult.From, responseMessage);
+            await messagingService.SendMessageAsync(incomingMessage.From, outgoingMessage);
         }
     }
 }

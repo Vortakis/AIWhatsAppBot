@@ -16,6 +16,7 @@
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 		<PackageReference Include="Twilio" Version="7.9.1" />
+		<PackageReference Include="Twilio.AspNet.Common" Version="8.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -24,9 +25,5 @@
 
 	<ItemGroup>
 		<Protobuf Include="..\AIWAB.Common\ExtAIProviderAPI\Protos\aiproviderapi.proto" GrpcServices="Client" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Controllers\" />
 	</ItemGroup>
 </Project>

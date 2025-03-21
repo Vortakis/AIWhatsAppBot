@@ -22,10 +22,10 @@ public class AIPoviderServiceGrpc : ExtAIProviderAPI.Protos.AIProviderService.AI
             PromptType = Enum.Parse<AIPromptType>(request.PromptType)
         };
 
-        var result = await _aiProviderService.ProcessPromptAsync(aiRequestDTO);
+       // var result = await _aiProviderService.ProcessPromptAsync(aiRequestDTO);
         var aiResponse = new AIResponse
         {
-            Answer = result.Answer
+            Answer = "It worked!"// result.Answer
         };
         return aiResponse;
     }

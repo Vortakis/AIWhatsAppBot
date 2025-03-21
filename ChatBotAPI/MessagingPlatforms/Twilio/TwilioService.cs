@@ -1,18 +1,20 @@
 ﻿
 using AIWAB.Common.Configuration.MessageService;
+using ChatBotAPI.MessageServices;
+using ChatBotAPI.MessagingPlatforms.Twilio.Model;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
-namespace ChatBotAPI.MessageServices
+namespace ChatBotAPI.MessagingPlatforms.Twilio
 {
-    public class WhatsAppService : IMessagingPlatformService
+    public class TwilioService : IMessagingPlatformService
     {
 
         private readonly string _twilioPhoneNumber;
 
-        public WhatsAppService(IOptions<ExternalMsgPlatformSettings> options)
+        public TwilioService(IOptions<ExternalMsgPlatformSettings> options)
         {
             var twilioSettings = options.Value.MessagingPlatforms["Twilio"]
                 ?? throw new InvalidOperationException("Twilio settings are missing.");
@@ -20,13 +22,15 @@ namespace ChatBotAPI.MessageServices
             _twilioPhoneNumber = twilioSettings.PhoneNumber!;
         }
 
-        public (string From, string Message) ParseReceivedMessage(string requestBody)
+        public (string From, string Message) ParseReceivedMessage<T>(T request)
         {
-            var formValues = QueryHelpers.ParseQuery(requestBody);
-            if (formValues.TryGetValue("From", out var fromNumber) && formValues.TryGetValue("Body", out var messageBody))
+            var twilioRequest = request as TwilioRequest;
+
+            if (twilioRequest != null)
             {
-                return (fromNumber.ToString(), messageBody.ToString());
+                return (twilioRequest.From, twilioRequest.Body);
             }
+            
             throw new InvalidOperationException("Required form values are missing.");
         }
 
