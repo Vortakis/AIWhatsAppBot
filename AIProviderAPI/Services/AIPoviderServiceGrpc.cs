@@ -25,9 +25,9 @@ public class AIPoviderServiceGrpc : AIProviderAPI.Protos.AIProviderService.AIPro
         var result = await _aiProviderService.ProcessPromptAsync(aiRequestDTO);
         var aiResponse = new AIResponse
         {
-            Answer = result.Answer ?? null,
+            Answer = result.Answer
         };
-        aiResponse.Embeddings.AddRange(result.Embeddings ?? Array.Empty<float>());
+        aiResponse.Embeddings.AddRange(result.Embeddings);
         return aiResponse;
     }
 }

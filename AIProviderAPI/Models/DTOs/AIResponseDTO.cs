@@ -2,7 +2,7 @@
 
 public class AIResponseDTO
 {
-    public string? Answer { get; set; }
+    public string Answer { get; set; } = string.Empty;
 
-    public float[]? Embeddings { get; set; }
+    public float[] Embeddings { get; set; } = Array.Empty<float>();
 }
