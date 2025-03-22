@@ -39,7 +39,7 @@ namespace ChatBotAPI.MessagingPlatforms.Twilio
             string toNumber = $"whatsapp:{to}";
             string twilioNumber = $"whatsapp:{_twilioPhoneNumber}";
 
-            _logger.LogDebug($"Twilio Sending To: {toNumber} From: {twilioNumber} Message: {message}");
+            _logger.LogInformation($"Twilio Sending To: {toNumber} From: {twilioNumber} Message: {message}");
 
             var messageOptions = new CreateMessageOptions(
       new PhoneNumber($"whatsapp:{to}"));
