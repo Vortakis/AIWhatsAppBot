@@ -35,8 +35,7 @@ public class OpenAIProvider : IAIProvider
 
         };
 
-        var chatClient = _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model);
-        var response = await chatClient.CompleteChatAsync(chatMessages);
+        var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model).CompleteChatAsync(chatMessages);
         return new AIResponseDTO { Answer = response.Value.Content[0].Text.Trim() };
     }
 
