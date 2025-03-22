@@ -10,15 +10,16 @@ namespace ChatBotAPI.MessagingPlatforms.Twilio
 {
     public class TwilioService : IMessagingPlatformService
     {
-
         private readonly string _twilioPhoneNumber;
+        private readonly ILogger<TwilioService> _logger;
 
-        public TwilioService(IOptions<ExternalMsgPlatformSettings> options)
+        public TwilioService(IOptions<ExternalMsgPlatformSettings> options, ILogger<TwilioService> logger)
         {
             var twilioSettings = options.Value.MessagingPlatforms["Twilio"]
                 ?? throw new InvalidOperationException("Twilio settings are missing.");
 
             _twilioPhoneNumber = twilioSettings.PhoneNumber!;
+            _logger = logger;
         }
 
         public (string From, string Message) ParseReceivedMessage<T>(T request)
@@ -35,19 +36,17 @@ namespace ChatBotAPI.MessagingPlatforms.Twilio
 
         public async Task SendMessageAsync(string to, string message)
         {
+            string toNumber = $"whatsapp:{to}";
+            string twilioNumber = $"whatsapp:{_twilioPhoneNumber}";
+
+            _logger.LogDebug($"Twilio Sending To: {toNumber} From: {twilioNumber} Message: {message}");
 
             var messageOptions = new CreateMessageOptions(
       new PhoneNumber($"whatsapp:{to}"));
             messageOptions.From = new PhoneNumber($"whatsapp:{_twilioPhoneNumber}");
             messageOptions.Body = message;
-
-
             var sendMessageResult = await MessageResource.CreateAsync(messageOptions);
-            /*var messageResource = await MessageResource.CreateAsync(
-                     body: message,
-                       from: new PhoneNumber($"whatsapp:{_twilioPhoneNumber}"),
-                       to: new PhoneNumber($"whatsapp:{to}")
-                   );*/
+
         }
     }
 }
