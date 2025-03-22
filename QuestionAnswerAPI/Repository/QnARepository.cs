@@ -6,30 +6,25 @@ namespace QuestionAnswerAPI.Repository;
 public class QnARepository : IQnARepository
 {
     private readonly ILogger<QnARepository> _logger;
-    private readonly string _qnaFilePath;
+    private readonly string _qnaRepoFullPath;
+    private readonly string _qnaRepoPath;
+    private readonly string _qnaRepoFileName;
 
 
-    public QnARepository(ILogger<QnARepository> logger, IWebHostEnvironment env)
+    public QnARepository(IWebHostEnvironment env, ILogger<QnARepository> logger)
     {
         _logger = logger;
 
-        var dataPath = Path.Combine(env.WebRootPath, "data");
-        if (!Directory.Exists(dataPath))
-        {
-            Directory.CreateDirectory(dataPath);
-        }
+        _qnaRepoPath = Path.Combine(env.ContentRootPath, "Repository", "Data");
+        _qnaRepoFileName = "qnaRepo.jsonl";
+        _qnaRepoFullPath = Path.Combine(_qnaRepoPath, _qnaRepoFileName);
 
-        _qnaFilePath = Path.Combine(dataPath, "QnA.jsonl"); 
-
-        if (!File.Exists(_qnaFilePath))
-        {
-            File.Create(_qnaFilePath).Dispose();
-        }
+        InitialiseRepo(env);
     }
 
     public List<QnAModel> GetAllQnA()
     {
-        var qnaItems = File.ReadAllLines(_qnaFilePath);
+        var qnaItems = File.ReadAllLines(_qnaRepoFullPath);
         return qnaItems
             .Select(line => JsonConvert.DeserializeObject<QnAModel>(line))
             .Where(qna => qna != null)
@@ -39,6 +34,19 @@ public class QnARepository : IQnARepository
     public void AddQnA(QnAModel qna)
     {
         var jsonLine = JsonConvert.SerializeObject(qna);
-        File.AppendAllLines(_qnaFilePath, [jsonLine]);
+        File.AppendAllLines(_qnaRepoFullPath, [jsonLine]);
+    }
+
+    private void InitialiseRepo(IWebHostEnvironment env)
+    {
+        if (!Directory.Exists(_qnaRepoPath))
+        {
+            Directory.CreateDirectory(_qnaRepoPath);
+        }
+
+        if (!File.Exists(_qnaRepoFullPath))
+        {
+            File.Create(_qnaRepoFullPath).Dispose();
+        }
     }
 }

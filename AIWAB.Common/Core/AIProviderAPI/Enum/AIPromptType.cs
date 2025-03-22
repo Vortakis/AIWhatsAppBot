@@ -2,5 +2,6 @@
 
 public enum AIPromptType
 {
-    QnA
+    QnA,
+    Embeddings
 }

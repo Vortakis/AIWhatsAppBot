@@ -14,4 +14,5 @@ message AIRequest {
 
 message AIResponse {
   string answer = 1;
+  repeated float embeddings = 2;
 }

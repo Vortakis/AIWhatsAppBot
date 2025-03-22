@@ -6,4 +6,5 @@ namespace AIProviderAPI.Services;
 public interface IAIProviderService
 {
     Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest);
+
 }
