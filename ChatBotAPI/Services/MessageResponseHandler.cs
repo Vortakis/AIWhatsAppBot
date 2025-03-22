@@ -1,6 +1,6 @@
 ﻿using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIProviderAPI.Protos;
-using ChatBotAPI.GrpcClients;
+using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 
 namespace ChatBotAPI.Services
 {

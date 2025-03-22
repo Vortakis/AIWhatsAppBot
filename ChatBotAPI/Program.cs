@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Twilio;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using ChatBotAPI.MessagingPlatforms;
-using ChatBotAPI.GrpcClients;
+using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 
 var builder = WebApplication.CreateBuilder(args);
 

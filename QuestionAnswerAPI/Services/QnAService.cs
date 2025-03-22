@@ -1,4 +1,9 @@
-﻿using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
+﻿using AIProviderAPI.Protos;
+using AIWAB.Common.Configuration.ExternalAI;
+using AIWAB.Common.Core.AIProviderAPI.Enum;
+using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
+using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
+using Microsoft.Extensions.Options;
 using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Repository;
 
@@ -7,27 +12,58 @@ namespace QuestionAnswerAPI.Services;
 public class QnAService : IQnAService
 {
     private readonly IQnARepository _qnaRepository;
+    private readonly IAIProviderClientService _aiProviderClientService;
+
+    private readonly Dictionary<string, AIUsageSettings> _aiUsageSettings;
+
     private readonly ILogger<QnAService> _logger;
 
-    public QnAService(IQnARepository qnaRepository, ILogger<QnAService> logger)
+    public QnAService(IQnARepository qnaRepository,
+        IAIProviderClientService aiProviderClientService,
+        IOptions<ExternalAISettings> externalAISettings, 
+        ILogger<QnAService> logger)
     {
         _qnaRepository = qnaRepository;
+        _aiProviderClientService = aiProviderClientService;
+        _aiUsageSettings = externalAISettings.Value.AIUsage;
         _logger = logger;
     }
 
-    public string GetAnswer(string question)
+    public async Task<QnAModel> GetAnswer(string question)
     {
-        var exactMatches = _qnaRepository.GetAllQnA()
-            .Where(q => q.Question.Equals(question, StringComparison.OrdinalIgnoreCase)).ToList();
-        if (exactMatches.Any())
-            return exactMatches.First().Answer;
+        var foundQnA = _qnaRepository.GetQnA(question);
+        if (foundQnA != null)
+            return foundQnA;
 
-        return "Sorry, I don't have an answer for that.";
+        var aiResponse = await _aiProviderClientService.PromptAIAsync(
+            new AIRequest
+            {
+                Prompt = question,
+                PromptType = AIPromptType.Embeddings.ToString()
+            });
+
+        foundQnA = EmbeddingHelper.GetByEmbedding(aiResponse.Embeddings.ToArray(), _qnaRepository.GetAllQnA());
+        if (foundQnA != null)
+            return foundQnA;
+
+        return null!;
     }
 
-    public void AddQnA(QnACreateDTO qnaCreateDTO)
+    public async Task AddQnAAsync(QnACreateDTO qnaCreateDTO)
     {
-        var newQnA = new QnAModel { Question = qnaCreateDTO.Question, Answer = qnaCreateDTO.Answer };
-        _qnaRepository.AddQnA(newQnA);
+        var aiResponse = await _aiProviderClientService.PromptAIAsync(
+            new AIRequest 
+            { 
+                Prompt = qnaCreateDTO.Question, 
+                PromptType = AIPromptType.Embeddings.ToString() 
+            });
+
+        var newQnA = new QnAModel 
+        { 
+            Embedding = aiResponse.Embeddings.ToArray(), 
+            Question = qnaCreateDTO.Question, 
+            Answer = qnaCreateDTO.Answer };
+
+        await _qnaRepository.AddQnAAsync(newQnA);
     }
 }

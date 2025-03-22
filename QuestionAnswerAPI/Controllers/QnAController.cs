@@ -1,5 +1,6 @@
 ﻿using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Services;
 
 namespace QuestionAnswerAPI.Controllers;
@@ -16,16 +17,16 @@ public class QnAController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<string> GetAnswer([FromQuery] string question)
+    public ActionResult<QnAModel> GetQnA([FromQuery] string question)
     {
         var answer = _qnaService.GetAnswer(question);
         return Ok(answer);
     }
 
     [HttpPost]
-    public IActionResult AddQnA([FromBody] QnACreateDTO qnaDto)
+    public async Task<IActionResult> AddQnA([FromBody] QnACreateDTO qnaDto)
     {
-        _qnaService.AddQnA(qnaDto);
+        await Task.Run(() => _qnaService.AddQnAAsync(qnaDto));
         return Ok("Q&A added successfully.");
     }
 }

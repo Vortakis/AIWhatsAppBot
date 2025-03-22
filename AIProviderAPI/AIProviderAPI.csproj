@@ -24,8 +24,4 @@
 		<ProjectReference Include="..\AIWAB.Common\AIWAB.Common.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="..\AIWAB.Common\Core\AIProviderAPI\Protos\aiproviderapi.proto" GrpcServices="Server" />
-	</ItemGroup>
-
 </Project>

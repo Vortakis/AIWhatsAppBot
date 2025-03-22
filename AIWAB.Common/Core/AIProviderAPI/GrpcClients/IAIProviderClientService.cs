@@ -1,6 +1,6 @@
 ﻿using AIProviderAPI.Protos;
 
-namespace ChatBotAPI.GrpcClients
+namespace AIWAB.Common.Core.AIProviderAPI.GrpcClients
 {
     public interface IAIProviderClientService
     {

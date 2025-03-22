@@ -1,10 +1,11 @@
 ﻿using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
+using QuestionAnswerAPI.Models;
 
 namespace QuestionAnswerAPI.Services;
 
 public interface IQnAService
 {
-    string GetAnswer(string question);
+    Task<QnAModel> GetAnswer(string question);
 
-    void AddQnA(QnACreateDTO qnaCreateDTO);
+    Task AddQnAAsync(QnACreateDTO qnaCreateDTO);
 }

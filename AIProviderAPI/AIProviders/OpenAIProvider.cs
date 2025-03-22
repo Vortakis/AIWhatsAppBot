@@ -11,12 +11,12 @@ namespace AIProviderAPI.AIProviders;
 public class OpenAIProvider : IAIProvider
 {
     private readonly OpenAIClient _openAIClient;
-    private readonly Dictionary<string, AIUsageSettings> _openAiUsageSettings;
+    private readonly Dictionary<string, AIUsageSettings> _aiUsageSettings;
 
     public OpenAIProvider(OpenAIClient openAIClient, IOptions<ExternalAISettings> externalAISettings)
     {
         _openAIClient = openAIClient;
-        _openAiUsageSettings = externalAISettings.Value.AIUsage;
+        _aiUsageSettings = externalAISettings.Value.AIUsage;
     }
 
     public async Task<AIResponseDTO> ProcessQnAAsync(string input)
@@ -30,12 +30,12 @@ public class OpenAIProvider : IAIProvider
 
         ChatCompletionOptions options = new ChatCompletionOptions
         {
-            MaxOutputTokenCount = _openAiUsageSettings[promptType].MaxTokens,
-            Temperature = _openAiUsageSettings[promptType].Temperature,
+            MaxOutputTokenCount = _aiUsageSettings[promptType].MaxTokens,
+            Temperature = _aiUsageSettings[promptType].Temperature,
 
         };
 
-        var chatClient = _openAIClient.GetChatClient(_openAiUsageSettings[promptType].Model);
+        var chatClient = _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model);
         var response = await chatClient.CompleteChatAsync(chatMessages);
         return new AIResponseDTO { Answer = response.Value.Content[0].Text.Trim() };
     }
@@ -44,7 +44,7 @@ public class OpenAIProvider : IAIProvider
     {
         string promptType = AIPromptType.Embeddings.ToString();
 
-        var embeddingClient = _openAIClient.GetEmbeddingClient(_openAiUsageSettings[promptType].Model);
+        var embeddingClient = _openAIClient.GetEmbeddingClient(_aiUsageSettings[promptType].Model);
         var response = await embeddingClient.GenerateEmbeddingsAsync(new List<string> { input });
 
         return new AIResponseDTO { Embeddings = response.Value[0].ToFloats().ToArray()};

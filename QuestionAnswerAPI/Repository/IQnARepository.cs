@@ -4,7 +4,9 @@ namespace QuestionAnswerAPI.Repository;
 
 public interface IQnARepository
 {
-    void AddQnA(QnAModel qnaModel);
+    QnAModel? GetQnA(string question);
+
+    Task AddQnAAsync(QnAModel qna);
 
     List<QnAModel> GetAllQnA();
 }

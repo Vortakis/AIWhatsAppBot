@@ -12,5 +12,7 @@ public class AIUsageSettings
 
     public float? Temperature { get; set; }
 
+    public float? SimilarityThreshold { get; set; }
+
     public int? MaxTokens { get; set; }
 }
