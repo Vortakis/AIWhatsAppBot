@@ -2,9 +2,9 @@
 
 public class QnAModel
 {
-    public required float[] Embedding { get; set; }
+    public float[] Embedding { get; set; } = Array.Empty<float>();
 
-    public required string Question { get; set; }
+    public string Question { get; set; } = string.Empty;
 
-    public required string Answer { get; set; }
+    public string Answer { get; set; } = string.Empty;
 }

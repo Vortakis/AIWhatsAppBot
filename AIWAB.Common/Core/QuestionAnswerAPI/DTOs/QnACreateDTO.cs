@@ -2,7 +2,9 @@
 
 public class QnACreateDTO
 {
-    public required string Question { get; set; }
+    public float[] Embedding { get; set; } = Array.Empty<float>();
 
-    public required string Answer { get; set; }
+    public string Question { get; set; } = string.Empty;
+
+    public string Answer { get; set; } = string.Empty;
 }

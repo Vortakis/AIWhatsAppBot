@@ -1,4 +1,5 @@
-﻿using AIProviderAPI.Protos;
+﻿using System.Xml.Linq;
+using AIProviderAPI.Protos;
 using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
@@ -35,32 +36,36 @@ public class QnAService : IQnAService
         if (foundQnA != null)
             return foundQnA;
 
-        var aiResponse = await _aiProviderClientService.PromptAIAsync(
+        var embeddingResult = await _aiProviderClientService.PromptAIAsync(
             new AIRequest
             {
                 Prompt = question,
                 PromptType = AIPromptType.Embeddings.ToString()
             });
 
-        foundQnA = EmbeddingHelper.GetByEmbedding(aiResponse.Embeddings.ToArray(), _qnaRepository.GetAllQnA());
+        foundQnA = EmbeddingHelper.GetByEmbedding(embeddingResult.Embeddings.ToArray(), _qnaRepository.GetAllQnA());
         if (foundQnA != null)
             return foundQnA;
 
-        return null!;
+        return new QnAModel { Embedding = embeddingResult.Embeddings.ToArray(), Question = question };
     }
 
     public async Task AddQnAAsync(QnACreateDTO qnaCreateDTO)
     {
-        var aiResponse = await _aiProviderClientService.PromptAIAsync(
-            new AIRequest 
-            { 
-                Prompt = qnaCreateDTO.Question, 
-                PromptType = AIPromptType.Embeddings.ToString() 
-            });
-
+        if (qnaCreateDTO.Embedding.Length == 0)
+        {
+            var embeddingResult = await _aiProviderClientService.PromptAIAsync(
+                new AIRequest
+                {
+                    Prompt = qnaCreateDTO.Question,
+                    PromptType = AIPromptType.Embeddings.ToString()
+                });
+            qnaCreateDTO.Embedding = embeddingResult.Embeddings.ToArray();
+        }
+    
         var newQnA = new QnAModel 
         { 
-            Embedding = aiResponse.Embeddings.ToArray(), 
+            Embedding = qnaCreateDTO.Embedding, 
             Question = qnaCreateDTO.Question, 
             Answer = qnaCreateDTO.Answer };
 
