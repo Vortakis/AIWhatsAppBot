@@ -8,11 +8,13 @@ namespace AIWAB.Common.Configuration.ExternalAI;
 
 public class AIUsageSettings
 {
-    public string? Model { get; set; }
+    public string Model { get; set; } = string.Empty;
 
-    public float? Temperature { get; set; }
+    public string[] References { get; set; } = Array.Empty<string>();
 
-    public float? SimilarityThreshold { get; set; }
+    public float Temperature { get; set; }
 
-    public int? MaxTokens { get; set; }
+    public float SimilarityThreshold { get; set; }
+
+    public int MaxTokens { get; set; }
 }

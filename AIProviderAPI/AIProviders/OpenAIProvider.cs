@@ -22,9 +22,12 @@ public class OpenAIProvider : IAIProvider
     public async Task<AIResponseDTO> ProcessQnAAsync(string input)
     {
         string promptType = AIPromptType.QnA.ToString();
+        string searchReferences = string.Join(", ", _aiUsageSettings[promptType].References);
         List<ChatMessage> chatMessages = new List<ChatMessage>
         {
-            new SystemChatMessage("You are a helpful assistant answering eToro-related questions."),
+            new SystemChatMessage("You are a helpful assistant answering only eToro-related questions."),
+            new SystemChatMessage($"You master knowledgebase is from these websites: '{searchReferences}'."),
+            new SystemChatMessage("Always provide accurate and concise responses."),
             new UserChatMessage(input)
         };
 

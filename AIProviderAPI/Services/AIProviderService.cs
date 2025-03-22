@@ -1,21 +1,30 @@
 ﻿
 using AIProviderAPI.AIProviders;
 using AIProviderAPI.Models.DTOs;
+using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
+using Microsoft.Extensions.Options;
 
 namespace AIProviderAPI.Services
 {
     public class AIProviderService : IAIProviderService
     {
         private readonly IAIProvider _aiProvider;
+        private readonly bool _enabled;
 
-        public AIProviderService(AIProviderFactory factory)
+        public AIProviderService(AIProviderFactory factory, IOptions<ExternalAISettings> externalAISettings)
         {
             _aiProvider = factory.GetProvider();
+            _enabled = externalAISettings.Value.Enabled;
         }
 
         public async Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest)
         {
+            if (!_enabled)
+            {
+                return await Task.FromResult(new AIResponseDTO { Answer = "AI Disabled manually - hi from me for now :)" });
+            }
+
             switch (promptRequest.PromptType)
             {
                 case AIPromptType.QnA:
@@ -25,8 +34,6 @@ namespace AIProviderAPI.Services
                 default:
                     throw null;
             }
-
-          //  return await Task.FromResult(new AIResponseDTO { Answer = "AI Disabled manually - hi from me for now :)" });
         }
     }
 }

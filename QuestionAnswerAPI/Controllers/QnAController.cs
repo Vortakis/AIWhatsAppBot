@@ -1,4 +1,5 @@
-﻿using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
+﻿using System.Threading.Tasks;
+using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Services;
@@ -17,9 +18,9 @@ public class QnAController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<QnAModel> GetQnA([FromQuery] string question)
+    public async Task<ActionResult<QnAModel>> GetQnA([FromQuery] string question)
     {
-        var answer = _qnaService.GetAnswer(question);
+        var answer = await _qnaService.GetAnswer(question);
         return Ok(answer);
     }
 
