@@ -1,7 +1,8 @@
 ﻿using AIProviderAPI.Protos;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 
-namespace ChatBotAPI.Clients
+namespace ChatBotAPI.GrpcClients
 {
     public class AIProviderClientService : IAIProviderClientService
     {

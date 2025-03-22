@@ -1,6 +1,5 @@
 using System.Net;
 using AIWAB.Common.Configuration.General;
-using ChatBotAPI.Clients;
 using ChatBotAPI.MessagingPlatforms.Twilio;
 using ChatBotAPI.Services;
 using AIProviderAPI.Protos;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Twilio;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using ChatBotAPI.MessagingPlatforms;
+using ChatBotAPI.GrpcClients;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,6 @@
 ﻿using AIWAB.Common.Core.AIProviderAPI.Enum;
-using ChatBotAPI.Clients;
 using AIProviderAPI.Protos;
-using Microsoft.AspNetCore.Mvc.Formatters;
+using ChatBotAPI.GrpcClients;
 
 namespace ChatBotAPI.Services
 {
