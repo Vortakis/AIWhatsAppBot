@@ -2,6 +2,7 @@ using AIWAB.Common.Configuration.ExternalAI;
 using AIProviderAPI.AIProviders;
 using AIProviderAPI.Services;
 using OpenAI;
+using System.Reflection.PortableExecutable;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,14 @@ builder.Services.AddScoped<IAIProviderService, AIProviderService>();
 builder.Services.AddControllers();
 
 builder.Services.AddGrpc();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.UseHttps();  
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;  
+    });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
