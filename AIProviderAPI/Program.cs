@@ -6,6 +6,7 @@ using System.Reflection.PortableExecutable;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
 
 // Add services to the container.
 builder.Services.Configure<ExternalAISettings>(builder.Configuration.GetSection("ExternalAISettings"));
@@ -30,10 +31,14 @@ builder.WebHost.ConfigureKestrel(options =>
     {
         listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
     });
-    options.ListenAnyIP(7103, listenOptions =>
+    if (env.IsDevelopment())
     {
-        listenOptions.UseHttps(); 
-    });
+        options.ListenAnyIP(7103, listenOptions =>
+        {
+            listenOptions.UseHttps();
+        });
+    }
+   
 });
 
 
