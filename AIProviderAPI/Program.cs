@@ -22,9 +22,11 @@ builder.Services.AddScoped<IAIProviderService, AIProviderService>();
 builder.Services.AddControllers();
 
 builder.Services.AddGrpc();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5001, listenOptions =>
+    options.ListenAnyIP(int.Parse(port), listenOptions =>
     {
         listenOptions.UseHttps();  
         listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;  

@@ -39,7 +39,7 @@ if (aiProviderEndpoint == null)
 
 builder.Services.AddGrpcClient<AIProviderService.AIProviderServiceClient>(options =>
 {
-    options.Address = new Uri($"{aiProviderEndpoint.Url}:5001");
+    options.Address = new Uri($"{aiProviderEndpoint.Url}");
 });
 
 builder.Services.AddTransient<IAIProviderClientService, AIProviderClientService>();
