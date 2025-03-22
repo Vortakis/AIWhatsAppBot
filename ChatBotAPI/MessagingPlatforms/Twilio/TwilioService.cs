@@ -35,11 +35,19 @@ namespace ChatBotAPI.MessagingPlatforms.Twilio
 
         public async Task SendMessageAsync(string to, string message)
         {
-            var messageResource = await MessageResource.CreateAsync(
-                       body: message,
+
+            var messageOptions = new CreateMessageOptions(
+      new PhoneNumber($"whatsapp:{to}"));
+            messageOptions.From = new PhoneNumber($"whatsapp:{_twilioPhoneNumber}");
+            messageOptions.Body = message;
+
+
+            var sendMessageResult = await MessageResource.CreateAsync(messageOptions);
+            /*var messageResource = await MessageResource.CreateAsync(
+                     body: message,
                        from: new PhoneNumber($"whatsapp:{_twilioPhoneNumber}"),
                        to: new PhoneNumber($"whatsapp:{to}")
-                   );
+                   );*/
         }
     }
 }
