@@ -30,23 +30,20 @@ namespace ChatBotAPI.MessagingPlatforms.Twilio
             {
                 return (twilioRequest.From, twilioRequest.Body);
             }
-            
+
             throw new InvalidOperationException("Required form values are missing.");
         }
 
         public async Task SendMessageAsync(string to, string message)
         {
-            string toNumber = $"whatsapp:{to}";
             string twilioNumber = $"whatsapp:{_twilioPhoneNumber}";
 
-            _logger.LogInformation($"Twilio Sending To: {toNumber} From: {twilioNumber} Message: {message}");
+            _logger.LogInformation($"Twilio attempt sending message To: {to} From: {twilioNumber} Message: {message}");
 
-            var messageOptions = new CreateMessageOptions(
-      new PhoneNumber($"whatsapp:{to}"));
-            messageOptions.From = new PhoneNumber($"whatsapp:{_twilioPhoneNumber}");
+            var messageOptions = new CreateMessageOptions(new PhoneNumber(to));
+            messageOptions.From = new PhoneNumber(twilioNumber);
             messageOptions.Body = message;
             var sendMessageResult = await MessageResource.CreateAsync(messageOptions);
-
         }
     }
 }
