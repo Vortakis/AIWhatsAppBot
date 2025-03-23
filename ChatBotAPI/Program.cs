@@ -10,6 +10,7 @@ using ChatBotAPI.MessagingPlatforms;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 using QuestionAnswerAPI.Protos;
 using AIWAB.Common.Core.QuestionAnswerAPI.GrpcClients;
+using AIWAB.Common.General.MessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,8 @@ builder.Services.AddTransient<TwilioService>();
 builder.Services.AddTransient<MessagingPlatformFactory>();
 builder.Services.AddScoped<IChatBotService, ChatBotService>();
 builder.Services.AddScoped<IMessageResponseHandler, MessageResponseHandler>();
-
+builder.Services.AddSingleton<IMessageQueue, InMemoryMessageQueue>();
+builder.Services.AddHostedService<MessageProcessorService>();
 builder.Services.AddControllers();
 
 

@@ -32,7 +32,7 @@ public class OpenAIProvider : IAIProvider
         List<ChatMessage> chatMessages = new List<ChatMessage>
         {
             new SystemChatMessage("You are a friendly helpful assistant answering only eToro and it's context related questions, nothing else."),
-            new SystemChatMessage("If it is only eToro and it's context related question, concatenate '_1_' in the beginning of your answer with no white space between them, otherwise '_0_'."),
+           // new SystemChatMessage("If it is only eToro and it's context related question, concatenate '_1_' in the beginning of your answer with no white space between them, otherwise '_0_'."),
             new SystemChatMessage($"You master knowledgebase is from these websites: '{searchReferences}'."),
             new SystemChatMessage("Always provide accurate and concise responses."),
             new SystemChatMessage("No text formatting in response. Just plain text without any bold, italics, or other markdown formatting."),
@@ -42,7 +42,7 @@ public class OpenAIProvider : IAIProvider
         if (_msgPlatformSettings.MaxMessageLength > 0)
         {
             var textCharLimit =
-                 new SystemChatMessage($"Your concatenated response characters should be less than {_msgPlatformSettings.MaxMessageLength}");
+                 new SystemChatMessage($"Your concatenated response characters should be less than {_msgPlatformSettings.MaxMessageLength}.");
 
             chatMessages.Add(textCharLimit);
         }
