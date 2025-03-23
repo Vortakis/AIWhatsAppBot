@@ -3,6 +3,7 @@ using AIProviderAPI.AIProviders;
 using AIProviderAPI.Services;
 using OpenAI;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -22,7 +23,11 @@ builder.Services.AddTransient<OpenAIProvider>();
 builder.Services.AddSingleton<AIProviderFactory>();
 builder.Services.AddScoped<IAIProviderService, AIProviderService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddGrpc();
 

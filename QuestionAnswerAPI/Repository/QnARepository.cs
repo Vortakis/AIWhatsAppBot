@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Text;
 using Newtonsoft.Json;
 using QuestionAnswerAPI.Models;
 using static Grpc.Core.Metadata;
@@ -43,7 +44,10 @@ public class QnARepository : IQnARepository
         if (added)
         {
             var jsonLine = JsonConvert.SerializeObject(qna);
-            await File.AppendAllTextAsync(_qnaRepoFullPath, jsonLine + Environment.NewLine);
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonLine);
+            string base64String = Convert.ToBase64String(byteArray);
+            await File.AppendAllTextAsync(_qnaRepoFullPath, base64String + Environment.NewLine);
         }
 
         return;
@@ -68,7 +72,10 @@ public class QnARepository : IQnARepository
 
         foreach (var line in File.ReadLines(_qnaRepoFullPath))
         {
-            var entry = JsonConvert.DeserializeObject<QnAModel>(line);
+            byte[] byteArray = Convert.FromBase64String(line);
+            string data = Encoding.UTF8.GetString(byteArray);
+
+            var entry = JsonConvert.DeserializeObject<QnAModel>(data);
             if (entry != null)
             {
                 _qnaRepoData[entry.Question] = entry;
