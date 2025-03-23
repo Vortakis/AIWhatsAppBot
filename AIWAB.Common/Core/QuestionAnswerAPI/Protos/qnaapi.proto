@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "QuestionAnswerAPI.Protos";
+
+service QnAService {
+  rpc GetQnA (QuestionDTO) returns (QnADTO);
+  rpc AddQnA (QnADTO) returns (google.protobuf.Empty);
+}
+
+message QuestionDTO {
+  string question = 1;
+}
+
+message QnADTO {
+  repeated float embeddings = 1;
+  string question = 2;
+  string answer = 3;
+}

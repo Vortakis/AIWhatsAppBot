@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Services;
 
@@ -20,14 +18,14 @@ public class QnAController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<QnAModel>> GetQnA([FromQuery] string question)
     {
-        var answer = await _qnaService.GetAnswer(question);
+        var answer = await _qnaService.GetQnAAsync(question);
         return Ok(answer);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddQnA([FromBody] QnACreateDTO qnaDto)
+    public async Task<IActionResult> AddQnA([FromBody] QnAModel qnaModel)
     {
-        await Task.Run(() => _qnaService.AddQnAAsync(qnaDto));
+        await _qnaService.AddQnAAsync(qnaModel);
         return Ok("Q&A added successfully.");
     }
 }

@@ -23,9 +23,9 @@ namespace AIWAB.Common.Core.AIProviderAPI.GrpcClients
             {
                 return await _aiProviderClient.PromptAIAsync(request);
             }
-     
+
             catch (RpcException e)
-{
+            {
                 _logger.LogError($"gRPC Error: {e.StatusCode}, {e.Message}");
                 throw;
             }

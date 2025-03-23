@@ -2,8 +2,6 @@ using AIWAB.Common.Configuration.ExternalAI;
 using AIProviderAPI.AIProviders;
 using AIProviderAPI.Services;
 using OpenAI;
-using System.Reflection.PortableExecutable;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -58,6 +56,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGrpcService<AIPoviderServiceGrpc>();
+app.MapGrpcService<AIProviderServiceGrpc>();
 app.MapPost("/", () => "This is the AIAPI gRPC server.");
 app.Run();

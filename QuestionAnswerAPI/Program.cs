@@ -5,10 +5,11 @@ using QuestionAnswerAPI.Repository;
 using QuestionAnswerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
 
 // Add services to the container.
 
-#region Config GRCP AIProviderClientService
+#region GRPC AIProvider Client
 var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
 var aiProviderEndpoint = appSettings?.Endpoints.FirstOrDefault(kvp => kvp.Key == "AIProviderAPI").Value;
 if (aiProviderEndpoint == null)
@@ -24,6 +25,23 @@ builder.Services.AddGrpcClient<AIProviderService.AIProviderServiceClient>(option
 builder.Services.AddTransient<IAIProviderClientService, AIProviderClientService>();
 #endregion
 
+#region GRPC Server
+builder.Services.AddGrpc();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+    if (env.IsDevelopment())
+    {
+        options.ListenAnyIP(7138, listenOptions =>
+        {
+            listenOptions.UseHttps();
+        });
+    }
+});
+#endregion
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,5 +65,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGrpcService<QnAServiceGrpc>();
+app.MapPost("/", () => "This is the AIAPI gRPC server.");
 app.Run();

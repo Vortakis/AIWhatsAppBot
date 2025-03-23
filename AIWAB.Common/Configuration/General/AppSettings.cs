@@ -10,7 +10,8 @@ namespace AIWAB.Common.Configuration.General
     {
         public Dictionary<string, EndpointSettings> Endpoints { get; set; } = new ()
         {
-            { "AIProviderAPI", new () }
+            { "AIProviderAPI", new () },
+            { "QnAAPI", new () }
         };
     }
 }

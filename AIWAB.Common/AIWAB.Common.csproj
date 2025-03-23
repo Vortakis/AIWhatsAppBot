@@ -17,5 +17,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="Core\AIProviderAPI\Protos\aiproviderapi.proto" GrpcServices="Both" />
+		<Protobuf Include="Core\QuestionAnswerAPI\Protos\qnaapi.proto" GrpcServices="Both" />
 	</ItemGroup>
+
 </Project>

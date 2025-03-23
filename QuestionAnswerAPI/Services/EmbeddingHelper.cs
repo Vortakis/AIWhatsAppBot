@@ -10,7 +10,7 @@ namespace QuestionAnswerAPI.Services
                 .AsParallel()  
                 .Select(qna =>
                 {
-                    var similarity = CosineSimilarity(qna.Embedding, targetEmbedding);
+                    var similarity = CosineSimilarity(qna.Embeddings, targetEmbedding);
                     return (QnA: qna, Similarity: similarity);
                 })
                 .Aggregate((best, current) => current.Similarity > best.Similarity ? current : best);

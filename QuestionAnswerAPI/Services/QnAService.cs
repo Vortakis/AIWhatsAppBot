@@ -1,9 +1,7 @@
-﻿using System.Xml.Linq;
-using AIProviderAPI.Protos;
+﻿using AIProviderAPI.Protos;
 using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
-using AIWAB.Common.Core.QuestionAnswerAPI.DTOs;
 using Microsoft.Extensions.Options;
 using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Repository;
@@ -30,7 +28,7 @@ public class QnAService : IQnAService
         _logger = logger;
     }
 
-    public async Task<QnAModel> GetAnswer(string question)
+    public async Task<QnAModel> GetQnAAsync(string question)
     {
         var foundQnA = _qnaRepository.GetQnA(question);
         if (foundQnA != null)
@@ -47,27 +45,27 @@ public class QnAService : IQnAService
         if (foundQnA != null)
             return foundQnA;
 
-        return new QnAModel { Embedding = embeddingResult.Embeddings.ToArray(), Question = question };
+        return new QnAModel { Embeddings = embeddingResult.Embeddings.ToArray(), Question = question };
     }
 
-    public async Task AddQnAAsync(QnACreateDTO qnaCreateDTO)
+    public async Task AddQnAAsync(QnAModel qnaModel)
     {
-        if (qnaCreateDTO.Embedding.Length == 0)
+        if (qnaModel.Embeddings.Length == 0)
         {
             var embeddingResult = await _aiProviderClientService.PromptAIAsync(
                 new AIRequest
                 {
-                    Prompt = qnaCreateDTO.Question,
+                    Prompt = qnaModel.Question,
                     PromptType = AIPromptType.Embeddings.ToString()
                 });
-            qnaCreateDTO.Embedding = embeddingResult.Embeddings.ToArray();
+            qnaModel.Embeddings = embeddingResult.Embeddings.ToArray();
         }
     
         var newQnA = new QnAModel 
         { 
-            Embedding = qnaCreateDTO.Embedding, 
-            Question = qnaCreateDTO.Question, 
-            Answer = qnaCreateDTO.Answer };
+            Embeddings = qnaModel.Embeddings, 
+            Question = qnaModel.Question, 
+            Answer = qnaModel.Answer };
 
         await _qnaRepository.AddQnAAsync(newQnA);
     }

@@ -5,11 +5,11 @@ using Grpc.Core;
 
 namespace AIProviderAPI.Services;
 
-public class AIPoviderServiceGrpc : AIProviderAPI.Protos.AIProviderService.AIProviderServiceBase
+public class AIProviderServiceGrpc : AIProviderAPI.Protos.AIProviderService.AIProviderServiceBase
 {
     private readonly IAIProviderService _aiProviderService;
 
-    public AIPoviderServiceGrpc(IAIProviderService aiProviderService)
+    public AIProviderServiceGrpc(IAIProviderService aiProviderService)
     {
         _aiProviderService = aiProviderService;
     }

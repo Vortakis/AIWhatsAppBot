@@ -8,6 +8,8 @@ using Twilio;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using ChatBotAPI.MessagingPlatforms;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
+using QuestionAnswerAPI.Protos;
+using AIWAB.Common.Core.QuestionAnswerAPI.GrpcClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,7 @@ builder.Services.Configure<ExternalMsgPlatformSettings>(builder.Configuration.Ge
 
 var appSettings= builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
 var aiProviderEndpoint = appSettings?.Endpoints.FirstOrDefault(kvp => kvp.Key == "AIProviderAPI").Value;
+var qnaEndpoint = appSettings?.Endpoints.FirstOrDefault(kvp => kvp.Key == "QnAAPI").Value;
 
 var externalMsgSettings = builder.Configuration.GetSection("ExternalMessagingSettings").Get<ExternalMsgPlatformSettings>();
 var twilioSettings = externalMsgSettings?.MessagingPlatforms["Twilio"];
@@ -32,17 +35,18 @@ builder.Services.AddScoped<IMessageResponseHandler, MessageResponseHandler>();
 
 builder.Services.AddControllers();
 
-if (aiProviderEndpoint == null)
-{
-    throw new InvalidOperationException("The AIProviderAPI endpoint configuration is missing.");
-}
 
 builder.Services.AddGrpcClient<AIProviderService.AIProviderServiceClient>(options =>
 {
-    options.Address = new Uri($"{aiProviderEndpoint.Url}");
+    options.Address = new Uri($"{aiProviderEndpoint?.Url}");
 });
-
 builder.Services.AddTransient<IAIProviderClientService, AIProviderClientService>();
+
+builder.Services.AddGrpcClient<QnAService.QnAServiceClient>(options =>
+{
+    options.Address = new Uri($"{qnaEndpoint?.Url}");
+});
+builder.Services.AddTransient<IQnAClientService, QnAClientService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
