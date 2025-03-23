@@ -30,7 +30,7 @@ if (twilioSettings != null)
 }
 
 builder.Services.AddTransient<TwilioService>();
-builder.Services.AddTransient<MessagingPlatformFactory>();
+builder.Services.AddSingleton<MessagingPlatformFactory>();
 builder.Services.AddScoped<IChatBotService, ChatBotService>();
 builder.Services.AddScoped<IMessageResponseHandler, MessageResponseHandler>();
 builder.Services.AddSingleton<IMessageQueue, InMemoryMessageQueue>();
