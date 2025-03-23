@@ -13,4 +13,6 @@ public class MessagingPlatformSettings
     public string? PhoneNumber { get; set; }
 
     public string? AccountSid { get; set; }
+
+    public int MaxMessageLength { get; set; } = 0;
 }

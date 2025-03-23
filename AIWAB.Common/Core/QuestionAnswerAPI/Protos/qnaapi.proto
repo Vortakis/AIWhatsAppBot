@@ -13,7 +13,7 @@ message QuestionDTO {
 }
 
 message QnADTO {
-  repeated float embeddings = 1;
-  string question = 2;
-  string answer = 3;
+  string question = 1;
+  string answer = 2;
+  repeated float embeddings = 3;
 }

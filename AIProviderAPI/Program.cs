@@ -2,12 +2,15 @@ using AIWAB.Common.Configuration.ExternalAI;
 using AIProviderAPI.AIProviders;
 using AIProviderAPI.Services;
 using OpenAI;
+using AIWAB.Common.Configuration.ExternalMsgPlatform;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
 
 // Add services to the container.
 builder.Services.Configure<ExternalAISettings>(builder.Configuration.GetSection("ExternalAISettings"));
+builder.Services.Configure<ExternalMsgPlatformSettings>(builder.Configuration.GetSection("ExternalMessagingSettings"));
+
 builder.Services.AddSingleton(sp =>
 {
     var externalAISettings = builder.Configuration.GetSection("ExternalAISettings").Get<ExternalAISettings>();
