@@ -31,9 +31,11 @@ public class OpenAIProvider : IAIProvider
         string searchReferences = string.Join(", ", _aiUsageSettings[promptType].References);
         List<ChatMessage> chatMessages = new List<ChatMessage>
         {
-            new SystemChatMessage("You are a helpful assistant answering eToro-related questions."),
+            new SystemChatMessage("You are a friendly helpful assistant answering only eToro and it's context related questions, nothing else."),
+            new SystemChatMessage("If it is only eToro and it's context related question, concatenate '_1_' in the beginning of your answer with no white space between them, otherwise '_0_'."),
             new SystemChatMessage($"You master knowledgebase is from these websites: '{searchReferences}'."),
             new SystemChatMessage("Always provide accurate and concise responses."),
+            new SystemChatMessage("No text formatting in response. Just plain text without any bold, italics, or other markdown formatting."),
             new UserChatMessage(input)
         };
 
@@ -50,7 +52,6 @@ public class OpenAIProvider : IAIProvider
         {
             MaxOutputTokenCount = _aiUsageSettings[promptType].MaxTokens,
             Temperature = _aiUsageSettings[promptType].Temperature,
-
         };
 
         var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model).CompleteChatAsync(chatMessages);
