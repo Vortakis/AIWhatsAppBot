@@ -26,7 +26,8 @@ namespace ChatBotAPI.Services
 
         public async Task ProcessChatMessageAsync<T>(MessagingPlatform platform, T request)
         {
-            await _messageQueue.EnqueueAsync(() => ProcessMessageAsync(platform, request));
+            //  await _messageQueue.EnqueueAsync(() => ProcessMessageAsync(platform, request));
+            await ProcessMessageAsync(platform, request);
         }
 
         private async Task ProcessMessageAsync<T>(MessagingPlatform platform, T request)
