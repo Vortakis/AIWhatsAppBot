@@ -19,7 +19,7 @@ public class QnARepository : IQnARepository
     {
         _logger = logger;
 
-        _qnaRepoPath = Path.Combine("/temp", "Repository", "Data");
+        _qnaRepoPath = Path.Combine("/tmp", "Repository", "Data");
         _qnaRepoFileName = "qnaRepo.jsonl";
         _qnaRepoFullPath = Path.Combine(_qnaRepoPath, _qnaRepoFileName);
         _qnaRepoData = new ConcurrentDictionary<string, QnAModel>(StringComparer.OrdinalIgnoreCase);
