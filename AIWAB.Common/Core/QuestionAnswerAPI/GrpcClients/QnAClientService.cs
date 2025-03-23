@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using AIProviderAPI.Protos;
-using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using QuestionAnswerAPI.Protos;
 

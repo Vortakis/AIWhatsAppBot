@@ -1,4 +1,6 @@
-﻿using QuestionAnswerAPI.Models;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Protos;
 
 namespace QuestionAnswerAPI.Services;
@@ -12,7 +14,7 @@ public class QnAServiceGrpc : QuestionAnswerAPI.Protos.QnAService.QnAServiceBase
         _qnaService = qnaService;
     }
 
-    public async Task<QnADTO> GetQnA(QuestionDTO questionDTO)
+    public override async Task<QnADTO> GetQnA(QuestionDTO questionDTO, ServerCallContext context)
     {
         var result = await _qnaService.GetQnAAsync(questionDTO.Question);
 
@@ -26,7 +28,7 @@ public class QnAServiceGrpc : QuestionAnswerAPI.Protos.QnAService.QnAServiceBase
         return qnaDTO;
     }
 
-    public async Task AddQnA(QnADTO qnaDTO)
+    public override async Task<Empty> AddQnA(QnADTO qnaDTO, ServerCallContext context)
     {
         var qnaModel = new QnAModel
         {
@@ -35,5 +37,6 @@ public class QnAServiceGrpc : QuestionAnswerAPI.Protos.QnAService.QnAServiceBase
             Answer = qnaDTO.Answer
         };
         await _qnaService.AddQnAAsync(qnaModel);
+        return new Empty();
     }
 }
