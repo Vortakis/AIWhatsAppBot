@@ -6,14 +6,19 @@ namespace QuestionAnswerAPI.Services
     {
         public static QnAModel GetByEmbedding(float[] targetEmbedding, List<QnAModel> allQnAs, float similarThreshold = 0.75f)
         {
+            if (allQnAs == null || !allQnAs.Any())
+            {
+                return null;
+            }
+
             var bestMatch = allQnAs
-                .AsParallel()  
-                .Select(qna =>
-                {
-                    var similarity = CosineSimilarity(qna.Embeddings, targetEmbedding);
-                    return (QnA: qna, Similarity: similarity);
-                })
-                .Aggregate((best, current) => current.Similarity > best.Similarity ? current : best);
+            .AsParallel()
+            .Select(qna =>
+            {
+                var similarity = CosineSimilarity(qna.Embeddings, targetEmbedding);
+                return (QnA: qna, Similarity: similarity);
+            })
+            .Aggregate((best, current) => current.Similarity > best.Similarity ? current : best);
 
             if (bestMatch.QnA != null && bestMatch.Similarity >= similarThreshold)
             {
