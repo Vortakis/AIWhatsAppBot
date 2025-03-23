@@ -4,7 +4,7 @@ namespace QuestionAnswerAPI.Services
 {
     public static class EmbeddingHelper
     {
-        public static QnAModel GetByEmbedding(float[] targetEmbedding, List<QnAModel> allQnAs, float similarThreshold = 0.75f)
+        public static QnAModel GetByEmbedding(float[] targetEmbedding, List<QnAModel> allQnAs, float similarThreshold = 0.84f)
         {
             if (allQnAs == null || !allQnAs.Any())
             {

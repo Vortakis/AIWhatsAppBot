@@ -30,7 +30,7 @@ namespace ChatBotAPI.Services
 
             string outgoingMessage = await _messageResponseHandler.HandleMessageAsync(incomingMessage.Message);
 
-           // await messagingService.SendMessageAsync(incomingMessage.From, outgoingMessage);
+            await messagingService.SendMessageAsync(incomingMessage.From, outgoingMessage);
         }
     }
 }

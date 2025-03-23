@@ -1,4 +1,5 @@
 using AIProviderAPI.Protos;
+using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Configuration.General;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 using QuestionAnswerAPI.Repository;
@@ -11,6 +12,7 @@ var env = builder.Environment;
 
 #region GRPC AIProvider Client
 var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+builder.Services.Configure<ExternalAISettings>(builder.Configuration.GetSection("ExternalAISettings"));
 var aiProviderEndpoint = appSettings?.Endpoints.FirstOrDefault(kvp => kvp.Key == "AIProviderAPI").Value;
 if (aiProviderEndpoint == null)
 {

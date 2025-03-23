@@ -41,7 +41,7 @@ public class QnAService : IQnAService
                 PromptType = AIPromptType.Embeddings.ToString()
             });
 
-        foundQnA = EmbeddingHelper.GetByEmbedding(embeddingResult.Embeddings.ToArray(), _qnaRepository.GetAllQnA());
+        foundQnA = EmbeddingHelper.GetByEmbedding(embeddingResult.Embeddings.ToArray(), _qnaRepository.GetAllQnA(), _aiUsageSettings["Embeddings"].SimilarityThreshold);
         if (foundQnA != null)
             return foundQnA;
 

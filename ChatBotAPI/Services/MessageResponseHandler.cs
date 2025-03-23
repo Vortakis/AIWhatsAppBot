@@ -35,7 +35,7 @@ namespace ChatBotAPI.Services
             qnaDTO.Answer = response.Answer;
             await _qnaClientService.AddQnAAsync(qnaDTO);
 
-            return response.Answer;
+            return $"💾 {response.Answer}";
         }
     }
 }
