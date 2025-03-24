@@ -11,11 +11,13 @@ namespace AIProviderAPI.Services
     {
         private readonly IAIProvider _aiProvider;
         private readonly bool _enabled;
+        private readonly ILogger<OpenAIProvider> _logger;
 
-        public AIProviderService(AIProviderFactory factory, IOptions<ExternalAISettings> externalAISettings)
+        public AIProviderService(AIProviderFactory factory, IOptions<ExternalAISettings> externalAISettings, ILogger<OpenAIProvider> logger)
         {
             _aiProvider = factory.GetProvider();
             _enabled = externalAISettings.Value.Enabled;
+            _logger = logger;
         }
 
         public async Task<AIResponseDTO> ProcessPromptAsync(AIRequestDTO promptRequest)

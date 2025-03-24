@@ -26,8 +26,8 @@ namespace ChatBotAPI.Services
 
         public async Task ProcessChatMessageAsync<T>(MessagingPlatform platform, T request)
         {
-            //  await _messageQueue.EnqueueAsync(() => ProcessMessageAsync(platform, request));
-            await ProcessMessageAsync(platform, request);
+            await _messageQueue.EnqueueAsync(() => ProcessMessageAsync(platform, request));
+            //await ProcessMessageAsync(platform, request);
         }
 
         private async Task ProcessMessageAsync<T>(MessagingPlatform platform, T request)
@@ -46,7 +46,8 @@ namespace ChatBotAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error processing message: {ex.Message}");
+                _logger.LogError(ex, $"Error processing message: {ex.Message}");
+
             }
         }
     }

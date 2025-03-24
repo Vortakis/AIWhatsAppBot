@@ -44,10 +44,7 @@ public class QnARepository : IQnARepository
         if (added)
         {
             var jsonLine = JsonConvert.SerializeObject(qna);
-
-            byte[] byteArray = Encoding.UTF8.GetBytes(jsonLine);
-            string base64String = Convert.ToBase64String(byteArray);
-            await File.AppendAllTextAsync(_qnaRepoFullPath, base64String + Environment.NewLine);
+            await File.AppendAllTextAsync(_qnaRepoFullPath, jsonLine + Environment.NewLine);
         }
 
         return;
@@ -72,10 +69,7 @@ public class QnARepository : IQnARepository
 
         foreach (var line in File.ReadLines(_qnaRepoFullPath))
         {
-            byte[] byteArray = Convert.FromBase64String(line);
-            string data = Encoding.UTF8.GetString(byteArray);
-
-            var entry = JsonConvert.DeserializeObject<QnAModel>(data);
+            var entry = JsonConvert.DeserializeObject<QnAModel>(line);
             if (entry != null)
             {
                 _qnaRepoData[entry.Question] = entry;

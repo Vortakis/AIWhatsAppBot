@@ -1,4 +1,5 @@
-﻿using AIProviderAPI.Protos;
+﻿using System.Diagnostics;
+using AIProviderAPI.Protos;
 using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
@@ -42,10 +43,13 @@ public class QnAService : IQnAService
             });
 
         foundQnA = EmbeddingHelper.GetByEmbedding(embeddingResult.Embeddings.ToArray(), _qnaRepository.GetAllQnA(), _aiUsageSettings["Embeddings"].SimilarityThreshold);
+
         if (foundQnA != null)
             return foundQnA;
 
-        return new QnAModel { Embeddings = embeddingResult.Embeddings.ToArray(), Question = question };
+        var qnaModel = new QnAModel { Embeddings = embeddingResult.Embeddings.ToArray(), Question = question };
+
+        return qnaModel;
     }
 
     public async Task AddQnAAsync(QnAModel qnaModel)

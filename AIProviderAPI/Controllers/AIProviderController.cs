@@ -2,6 +2,7 @@ using AIProviderAPI.AIProviders;
 using AIProviderAPI.Models.DTOs;
 using AIProviderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace AIProviderAPI.Controllers;
 
@@ -21,8 +22,11 @@ public class AIProviderController : ControllerBase
     [HttpPost("prompt")]
     public async Task<IActionResult> PromptAI([FromBody] AIRequestDTO request)
     {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        stopwatch.Start();  
         var response = await _aiProviderService.ProcessPromptAsync(request);
-
+        stopwatch.Stop();
+        _logger.LogInformation($"Time took: {stopwatch.ElapsedMilliseconds}ms.");
         return Ok(response);
     }
 }
