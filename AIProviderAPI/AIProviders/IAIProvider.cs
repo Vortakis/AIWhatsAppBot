@@ -5,7 +5,7 @@ namespace AIProviderAPI.AIProviders;
 
 public interface IAIProvider
 {
-    Task<AIResponseDTO> ProcessQnAAsync(string input);
+    Task<AIResponseDTO> ProcessQnAAsync(List<string> systemInput, string userInput);
 
     Task<AIResponseDTO> GetEmbeddingsAsync(string input);
 }

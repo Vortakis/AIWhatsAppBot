@@ -8,7 +8,7 @@ namespace AIWAB.Common.General.MessageQueue
     {
         private readonly IMessageQueue _messageQueue;
         private readonly ILogger<MessageProcessorService> _logger;
-        private const int MaxConcurrentTasks = 5;
+        private const int MaxConcurrentTasks = 8;
 
         public MessageProcessorService(
             IMessageQueue messageQueue,
@@ -24,15 +24,14 @@ namespace AIWAB.Common.General.MessageQueue
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Process multiple tasks concurrently, with a limit
                 for (int i = 0; i < MaxConcurrentTasks; i++)
                 {
                     var taskToProcess = await _messageQueue.DequeueAsync(stoppingToken);
                     tasks.Add(ProcessTaskWithRetryAsync(taskToProcess));
                 }
 
-                await Task.WhenAny(tasks);  // Wait for any task to complete
-                tasks.RemoveAll(t => t.IsCompleted);  // Remove completed tasks
+                await Task.WhenAny(tasks);  
+                tasks.RemoveAll(t => t.IsCompleted);  
             }
         }
 
@@ -44,13 +43,13 @@ namespace AIWAB.Common.General.MessageQueue
                 try
                 {
                     await task();
-                    return; // If task succeeds, exit
+                    return; 
                 }
                 catch (Exception ex)
                 {
                     _logger.LogWarning($"Task failed: {ex.Message}, retrying...");
                     retries--;
-                    await Task.Delay(1000); // Delay before retrying
+                    await Task.Delay(1000); 
                 }
             }
         }

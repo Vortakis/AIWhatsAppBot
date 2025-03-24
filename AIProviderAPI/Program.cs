@@ -4,6 +4,7 @@ using AIProviderAPI.Services;
 using OpenAI;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using System.Text.Json.Serialization;
+using AIWAB.Common.General.HttpPolicy;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -19,6 +20,7 @@ builder.Services.AddSingleton(sp =>
     return new OpenAIClient(openAISettings?.ApiKey);
 });
 builder.Services.AddTransient<OpenAIProvider>();
+//builder.Services.AddTransient<IAIProvider, OpenAIProvider>();
 builder.Services.AddSingleton<AIProviderFactory>();
 builder.Services.AddScoped<IAIProviderService, AIProviderService>();
 
@@ -50,6 +52,14 @@ builder.WebHost.ConfigureKestrel(options =>
     }
    
 });
+
+builder.Services.AddTransient<IFailurePolicyService, FailurePolicyService>();
+builder.Services.AddHttpClient<IAIProvider, OpenAIProvider>()
+    .AddHttpMessageHandler(sp =>
+    {
+        var policyService = sp.GetRequiredService<IFailurePolicyService>();
+        return new FailurePolicyHandler(policyService);
+    });
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

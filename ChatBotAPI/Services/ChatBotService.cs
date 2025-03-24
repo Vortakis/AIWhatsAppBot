@@ -1,4 +1,6 @@
 ﻿
+using System.Text.RegularExpressions;
+using System.Text;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using AIWAB.Common.General.MessageQueue;
 using ChatBotAPI.MessagingPlatforms;
@@ -48,10 +50,9 @@ public class ChatBotService : IChatBotService
 
             string outgoingMessage = await _messageResponseHandler.HandleMessageAsync(incomingMessage.Message);
 
-            foreach (var chunk in outgoingMessage.Chunk(_msgPlatformSettings.MaxMessageLength))
+            foreach (var chunk in ChunkBySentence(outgoingMessage, _msgPlatformSettings.MaxMessageLength))
             {
-                string chunkString = new string(chunk);
-                await messagingService.SendMessageAsync(incomingMessage.From, chunkString);
+                await messagingService.SendMessageAsync(incomingMessage.From, chunk);
             }
         }
         catch (Exception ex)
@@ -59,5 +60,32 @@ public class ChatBotService : IChatBotService
             _logger.LogError(ex, $"Error processing message: {ex.Message}");
 
         }
+    }
+
+    private IEnumerable<string> ChunkBySentence(string text, int maxLength)
+    {
+        // Split by both sentences (end punctuation + space) and newlines.
+        var chunks = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+        var currentChunk = new StringBuilder();
+
+        foreach (var line in chunks)
+        {
+            string cleanLine = line.Trim();
+
+            // If adding this line exceeds the maxLength, yield the current chunk
+            if (currentChunk.Length + cleanLine.Length + 1 > maxLength)
+            {
+                yield return currentChunk.ToString().Trim();
+                currentChunk.Clear();
+            }
+
+            // Add the line to the current chunk
+            currentChunk.AppendLine(cleanLine);
+        }
+
+        // If there's anything left in the current chunk, yield it
+        if (currentChunk.Length > 0)
+            yield return currentChunk.ToString().Trim();
     }
 }

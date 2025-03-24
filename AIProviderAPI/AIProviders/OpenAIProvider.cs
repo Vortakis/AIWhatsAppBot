@@ -27,19 +27,15 @@ public class OpenAIProvider : IAIProvider
         _logger = logger;
     }
 
-    public async Task<AIResponseDTO> ProcessQnAAsync(string input)
+    public async Task<AIResponseDTO> ProcessQnAAsync(List<string> systemInput, string userInput)
     {
         string promptType = AIPromptType.QnA.ToString();
         string searchReferences = string.Join(", ", _aiUsageSettings[promptType].References);
-        List<ChatMessage> chatMessages = new List<ChatMessage>
-        {
-            new SystemChatMessage($"You are a friendly assistant, answering questions only related with eToro."),
-            new SystemChatMessage($"Only use information from these sources: {searchReferences}. Do not generate answers from other knowledge."),
-            new SystemChatMessage("Always provide concise, self-contained responses."),
-            new SystemChatMessage($"Aim the response to be **as answered and complete as possible** within { _aiUsageSettings[promptType].MaxTokens} tokens."),
-            new SystemChatMessage("Strictly do not use text formatting (no bold, italics, or markdown)."),
-            new UserChatMessage(input)
-        };
+
+        List<ChatMessage> chatMessages = new ();
+
+        chatMessages.AddRange(systemInput.Select(s => new SystemChatMessage(s)).ToList());
+        chatMessages.Add(new UserChatMessage(userInput));
 
         ChatCompletionOptions options = new ChatCompletionOptions
         {
@@ -64,8 +60,6 @@ public class OpenAIProvider : IAIProvider
 
         } while (continuationFlag);
 
-
-
         return new AIResponseDTO { Answer = responseMsg };
     }
 
@@ -78,4 +72,6 @@ public class OpenAIProvider : IAIProvider
 
         return new AIResponseDTO { Embeddings = response.Value[0].ToFloats().ToArray() };
     }
+
+   
 }
