@@ -14,7 +14,6 @@ public class OpenAIProvider : IAIProvider
 {
     private readonly OpenAIClient _openAIClient;
     private readonly Dictionary<string, AIUsageSettings> _aiUsageSettings;
-    private readonly MessagingPlatformSettings _msgPlatformSettings;
     private readonly ILogger<OpenAIProvider> _logger;
 
     public OpenAIProvider(
@@ -25,7 +24,6 @@ public class OpenAIProvider : IAIProvider
     {
         _openAIClient = openAIClient;
         _aiUsageSettings = externalAISettings.Value.AIUsage;
-        _msgPlatformSettings = externalMsgSettings.Value.MessagingPlatforms[externalMsgSettings.Value.DefaultPlatform];
         _logger = logger;
     }
 
@@ -35,10 +33,11 @@ public class OpenAIProvider : IAIProvider
         string searchReferences = string.Join(", ", _aiUsageSettings[promptType].References);
         List<ChatMessage> chatMessages = new List<ChatMessage>
         {
-            new SystemChatMessage($"You are a friendly assistant answering only questions related to eToro. " +
-            $"Your knowledge comes from these websites: '{searchReferences}'. " +
-            $"Provide accurate, concise responses without text formatting (no bold, italics, or markdown). " +
-            $"Keep responses under {_msgPlatformSettings.MaxMessageLength} characters."),
+            new SystemChatMessage($"You are a friendly assistant, answering questions only related with eToro."),
+            new SystemChatMessage($"Only use information from these sources: {searchReferences}. Do not generate answers from other knowledge."),
+            new SystemChatMessage("Always provide concise, self-contained responses."),
+            new SystemChatMessage($"Aim the response to be **as answered and complete as possible** within { _aiUsageSettings[promptType].MaxTokens} tokens."),
+            new SystemChatMessage("Strictly do not use text formatting (no bold, italics, or markdown)."),
             new UserChatMessage(input)
         };
 
@@ -48,8 +47,26 @@ public class OpenAIProvider : IAIProvider
             Temperature = _aiUsageSettings[promptType].Temperature,
         };
 
-        var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model).CompleteChatAsync(chatMessages);
-        return new AIResponseDTO { Answer = response.Value.Content[0].Text.Trim() };
+        bool continuationFlag = false;
+        string responseMsg = string.Empty;
+        do
+        {
+            continuationFlag = false;
+            var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model).CompleteChatAsync(chatMessages, options);
+            responseMsg = string.Concat(responseMsg, response.Value.Content[0].Text.Trim());
+
+            if (response.Value.FinishReason == ChatFinishReason.Length)
+            {
+                chatMessages.Add(new AssistantChatMessage(response.Value.Content[0].Text.Trim()));
+                chatMessages.Add(new UserChatMessage("Continue from your last point."));
+                continuationFlag = true;
+            }           
+
+        } while (continuationFlag);
+
+
+
+        return new AIResponseDTO { Answer = responseMsg };
     }
 
     public async Task<AIResponseDTO> GetEmbeddingsAsync(string input)

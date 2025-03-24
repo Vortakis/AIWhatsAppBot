@@ -3,6 +3,8 @@ using AIProviderAPI.Protos;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 using AIWAB.Common.Core.QuestionAnswerAPI.GrpcClients;
 using QuestionAnswerAPI.Protos;
+using AIWAB.Common.Configuration.ExternalMsgPlatform;
+using Microsoft.Extensions.Options;
 
 namespace ChatBotAPI.Services
 {
@@ -13,7 +15,8 @@ namespace ChatBotAPI.Services
 
         public MessageResponseHandler(
             IQnAClientService qnaClientService,
-            IAIProviderClientService aiProviderClientService)
+            IAIProviderClientService aiProviderClientService,
+            IOptions<ExternalMsgPlatformSettings> externalMsgSettings)
         {
             _qnaClientService = qnaClientService;
             _aiProviderClientService = aiProviderClientService;
@@ -23,13 +26,13 @@ namespace ChatBotAPI.Services
         {
             QuestionDTO questionDTO = new QuestionDTO { Question = message };
             var qnaDTO = await _qnaClientService.GetQnAAsync(questionDTO);
-            
+
             if (!string.IsNullOrEmpty(qnaDTO.Answer))
             {
                 return qnaDTO.Answer;
             }
 
-            AIRequest aiRequest = new AIRequest { Prompt = message, PromptType = AIPromptType.QnA.ToString()};     
+            AIRequest aiRequest = new AIRequest { Prompt = message, PromptType = AIPromptType.QnA.ToString() };
             var response = await _aiProviderClientService.PromptAIAsync(aiRequest);
 
             qnaDTO.Answer = response.Answer;

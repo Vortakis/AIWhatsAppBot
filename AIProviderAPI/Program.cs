@@ -10,7 +10,6 @@ var env = builder.Environment;
 
 // Add services to the container.
 builder.Services.Configure<ExternalAISettings>(builder.Configuration.GetSection("ExternalAISettings"));
-builder.Services.Configure<ExternalMsgPlatformSettings>(builder.Configuration.GetSection("ExternalMessagingSettings"));
 
 builder.Services.AddSingleton(sp =>
 {
