@@ -12,7 +12,7 @@ An AI WhatsApp ChatBot, asnwer questions only related with eToro.
 - Twilio
 - OpenAI
 - Docker: Individual containers.
-- Google Cloud Run/Build: 
+- Google Cloud Run/Build: Built & Deployed in 3 web services.
 
 ## Documentation
 - Project conists of 3 WebApp services and a class library for shared code.
