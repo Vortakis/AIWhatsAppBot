@@ -18,7 +18,6 @@ namespace AIWAB.Common.General.MessageQueue
             await _queue.Writer.WriteAsync(task);
         }
 
-        // Dequeue a task
         public async Task<Func<Task>> DequeueAsync(CancellationToken token)
         {
             return await _queue.Reader.ReadAsync(token);
