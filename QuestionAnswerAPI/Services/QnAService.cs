@@ -112,8 +112,4 @@ public class QnAService : IQnAService, IHostedService
         await _qnaRepository.AddQnAAsync(newQnA);
     }
 
-    private async Task ConfigureRepoData() {
-    }
-
-
 }
