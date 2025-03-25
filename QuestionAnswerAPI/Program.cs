@@ -57,6 +57,7 @@ builder.Services.AddSwaggerGen();
 // Register services.
 builder.Services.AddSingleton<IQnARepository, QnARepository>();
 builder.Services.AddScoped<IQnAService, QnAService>();
+builder.Services.AddHostedService<QnAService>();
 
 var app = builder.Build();
 

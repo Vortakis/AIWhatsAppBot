@@ -38,8 +38,8 @@ namespace AIProviderAPI.Services
             switch (promptRequest.PromptType)
             {
                 case AIPromptType.QnA:
-                    string promptType = AIPromptType.QnA.ToString();
-
+                case AIPromptType.BulkQnA:
+                    string promptType = promptRequest.PromptType.ToString();
                     if (!_aiUsageSettings.TryGetValue(promptType, out var usageSettings))
                     {
                         _logger.LogWarning("AI Usage settings not found for {PromptType}", promptType);
@@ -49,13 +49,13 @@ namespace AIProviderAPI.Services
                     List<string> systemInput = new List<string>(5)
                     {
                         "You are a friendly assistant, answering questions only related with eToro.",
-                        $"Only use information from these sources: {string.Join(", ", _aiUsageSettings[promptType].References)}. Do not generate answers from other knowledge.",
+                        $"Only use information from these sources: {string.Join(", ", _aiUsageSettings[AIPromptType.QnA.ToString()].References)}. Do not generate answers from other knowledge.",
                         "Always provide concise, self-contained responses.",
                         $"Aim the response to be **as answered and complete as possible** within {_aiUsageSettings[promptType].MaxTokens} tokens.",
                         "Strictly do not use text formatting (no bold, italics, or markdown)."
                     };
 
-                    return await _aiProvider.ProcessQnAAsync(systemInput, promptRequest.Prompt);
+                    return await _aiProvider.ProcessQnAAsync(systemInput, promptRequest.Prompt, promptRequest.PromptType);
                 case AIPromptType.Embeddings:
                     return await _aiProvider.GetEmbeddingsAsync(promptRequest.Prompt);
                 default:

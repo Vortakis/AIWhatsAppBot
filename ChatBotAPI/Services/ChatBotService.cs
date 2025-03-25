@@ -48,7 +48,7 @@ public class ChatBotService : IChatBotService
 
             _logger.LogInformation($"Received message from {incomingMessage.From}: {incomingMessage.Message}");
 
-            string outgoingMessage = await _messageResponseHandler.HandleMessageAsync(incomingMessage.Message);
+            string outgoingMessage = await _messageResponseHandler.HandleMessageAsync($"Answer this in less than {_msgPlatformSettings.MaxMessageLength} characters: " + incomingMessage.Message);
 
             foreach (var chunk in ChunkBySentence(outgoingMessage, _msgPlatformSettings.MaxMessageLength))
             {

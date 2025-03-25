@@ -3,7 +3,6 @@ using AIProviderAPI.Models.DTOs;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Chat;
-using OpenAI.Embeddings;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIWAB.Common.Configuration.ExternalMsgPlatform;
 using AIProviderAPI.Controllers;
@@ -16,6 +15,9 @@ public class OpenAIProvider : IAIProvider
     private readonly Dictionary<string, AIUsageSettings> _aiUsageSettings;
     private readonly ILogger<OpenAIProvider> _logger;
 
+    private readonly string _bulkQnASchema;
+    private const string _bulkQnASchemaName = "bulkqna_schema";
+
     public OpenAIProvider(
         OpenAIClient openAIClient,
         IOptions<ExternalAISettings> externalAISettings,
@@ -25,12 +27,13 @@ public class OpenAIProvider : IAIProvider
         _openAIClient = openAIClient;
         _aiUsageSettings = externalAISettings.Value.AIUsage;
         _logger = logger;
+
+        string schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Schemas/{_bulkQnASchemaName}.json");
+        _bulkQnASchema = File.ReadAllText(schemaPath);
     }
 
-    public async Task<AIResponseDTO> ProcessQnAAsync(List<string> systemInput, string userInput)
+    public async Task<AIResponseDTO> ProcessQnAAsync(List<string> systemInput, string userInput, AIPromptType promptType)
     {
-        string promptType = AIPromptType.QnA.ToString();
-        string searchReferences = string.Join(", ", _aiUsageSettings[promptType].References);
 
         List<ChatMessage> chatMessages = new ();
 
@@ -39,16 +42,27 @@ public class OpenAIProvider : IAIProvider
 
         ChatCompletionOptions options = new ChatCompletionOptions
         {
-            MaxOutputTokenCount = _aiUsageSettings[promptType].MaxTokens,
-            Temperature = _aiUsageSettings[promptType].Temperature,
+            MaxOutputTokenCount = _aiUsageSettings[promptType.ToString()].MaxTokens,
+            Temperature = _aiUsageSettings[AIPromptType.QnA.ToString()].Temperature,
         };
+
+        if (promptType == AIPromptType.BulkQnA)
+        {
+
+            BinaryData schemaBinaryData = BinaryData.FromString(_bulkQnASchema);
+            ChatResponseFormat responseFormat = ChatResponseFormat.CreateJsonSchemaFormat(
+                jsonSchemaFormatName: _bulkQnASchemaName,
+                jsonSchema: schemaBinaryData
+            );
+            options.ResponseFormat = responseFormat;
+        }
 
         bool continuationFlag = false;
         string responseMsg = string.Empty;
         do
         {
             continuationFlag = false;
-            var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType].Model).CompleteChatAsync(chatMessages, options);
+            var response = await _openAIClient.GetChatClient(_aiUsageSettings[promptType.ToString()].Model).CompleteChatAsync(chatMessages, options);
             responseMsg = string.Concat(responseMsg, response.Value.Content[0].Text.Trim());
 
             if (response.Value.FinishReason == ChatFinishReason.Length)
@@ -72,6 +86,5 @@ public class OpenAIProvider : IAIProvider
 
         return new AIResponseDTO { Embeddings = response.Value[0].ToFloats().ToArray() };
     }
-
    
 }

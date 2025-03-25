@@ -1,15 +1,17 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Frozen;
+using System.Diagnostics;
 using AIProviderAPI.Protos;
 using AIWAB.Common.Configuration.ExternalAI;
 using AIWAB.Common.Core.AIProviderAPI.Enum;
 using AIWAB.Common.Core.AIProviderAPI.GrpcClients;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using QuestionAnswerAPI.Models;
 using QuestionAnswerAPI.Repository;
 
 namespace QuestionAnswerAPI.Services;
 
-public class QnAService : IQnAService
+public class QnAService : IQnAService, IHostedService
 {
     private readonly IQnARepository _qnaRepository;
     private readonly IAIProviderClientService _aiProviderClientService;
@@ -27,6 +29,42 @@ public class QnAService : IQnAService
         _aiProviderClientService = aiProviderClientService;
         _aiUsageSettings = externalAISettings.Value.AIUsage;
         _logger = logger;
+
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            bool firstTime = _qnaRepository.InitialiseRepo();
+
+            if (!firstTime)
+            {
+                await Task.CompletedTask;
+                return;
+            }
+            var response = await _aiProviderClientService.PromptAIAsync(new AIRequest
+            {
+                PromptType = AIPromptType.BulkQnA.ToString(),
+                Prompt = "Most 10 common questions and answers related to eToro."
+            });
+
+            var initQnAs = JsonConvert.DeserializeObject<Dictionary<string, List<QnAModel>>>(response.Answer);
+            if (initQnAs != null && initQnAs.ContainsKey("items"))
+            {
+                var tasks = initQnAs["items"].Select(qna => AddQnAAsync(qna)).ToArray();
+                await Task.WhenAll(tasks);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred during QnA Repository initialization.");
+        }
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
     }
 
     public async Task<QnAModel> GetQnAAsync(string question)
@@ -73,4 +111,9 @@ public class QnAService : IQnAService
 
         await _qnaRepository.AddQnAAsync(newQnA);
     }
+
+    private async Task ConfigureRepoData() {
+    }
+
+
 }

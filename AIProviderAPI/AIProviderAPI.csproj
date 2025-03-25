@@ -24,4 +24,10 @@
 		<ProjectReference Include="..\AIWAB.Common\AIWAB.Common.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Schemas\bulkqna_schema.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

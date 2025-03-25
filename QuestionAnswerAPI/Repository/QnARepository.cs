@@ -9,14 +9,14 @@ namespace QuestionAnswerAPI.Repository;
 public class QnARepository : IQnARepository
 {
     private readonly ILogger<QnARepository> _logger;
+
     private readonly string _qnaRepoFullPath;
     private readonly string _qnaRepoPath;
     private readonly string _qnaRepoFileName;
-    private readonly object _fileLock = new();
 
     private ConcurrentDictionary<string, QnAModel> _qnaRepoData;
 
-    public QnARepository(IWebHostEnvironment env, ILogger<QnARepository> logger)
+    public QnARepository(ILogger<QnARepository> logger)
     {
         _logger = logger;
 
@@ -24,7 +24,34 @@ public class QnARepository : IQnARepository
         _qnaRepoFileName = "qnaRepo.jsonl";
         _qnaRepoFullPath = Path.Combine(_qnaRepoPath, _qnaRepoFileName);
         _qnaRepoData = new ConcurrentDictionary<string, QnAModel>(StringComparer.OrdinalIgnoreCase);
-        InitialiseRepo(env);
+    }
+
+    public bool InitialiseRepo()
+    {
+        bool firstTime = false;
+
+        if (!Directory.Exists(_qnaRepoPath))
+        {
+            Directory.CreateDirectory(_qnaRepoPath);
+            firstTime = true;
+        }
+
+        if (!File.Exists(_qnaRepoFullPath))
+        {
+            File.Create(_qnaRepoFullPath).Dispose();
+            firstTime = true;
+        }
+
+        foreach (var line in File.ReadLines(_qnaRepoFullPath))
+        {
+            var entry = JsonConvert.DeserializeObject<QnAModel>(line);
+            if (entry != null)
+            {
+                _qnaRepoData[entry.Question] = entry;
+            }
+        }
+
+        return firstTime || _qnaRepoData.Count == 0;
     }
 
     public QnAModel? GetQnA(string question)
@@ -53,27 +80,5 @@ public class QnARepository : IQnARepository
     public List<QnAModel> GetAllQnA()
     {
         return _qnaRepoData.Values.ToList();
-    }
-
-    private void InitialiseRepo(IWebHostEnvironment env)
-    {
-        if (!Directory.Exists(_qnaRepoPath))
-        {
-            Directory.CreateDirectory(_qnaRepoPath);
-        }
-
-        if (!File.Exists(_qnaRepoFullPath))
-        {
-            File.Create(_qnaRepoFullPath).Dispose();
-        }
-
-        foreach (var line in File.ReadLines(_qnaRepoFullPath))
-        {
-            var entry = JsonConvert.DeserializeObject<QnAModel>(line);
-            if (entry != null)
-            {
-                _qnaRepoData[entry.Question] = entry;
-            }
-        }
     }
 }
